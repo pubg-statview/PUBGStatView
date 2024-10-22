@@ -6,14 +6,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.domain.Player;
 import zoo.pubg.repository.PlayerRepository;
-import zoo.pubg.service.api.PUBGBasicAPI;
+import zoo.pubg.service.api.PubgBasicApi;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PlayerService {
 
-    private final PUBGBasicAPI pubgBasicAPI;
+    private final PubgBasicApi pubgBasicAPI;
 
     @Autowired
     private PlayerRepository playerRepository;
