@@ -25,7 +25,7 @@ public class PlayerService {
     private PlayerRepository playerRepository;
 
     public Player searchPlayer(String name) {
-        return playerRepository.find(name);
+        return playerRepository.findByName(name);
     }
 
     @Transactional
