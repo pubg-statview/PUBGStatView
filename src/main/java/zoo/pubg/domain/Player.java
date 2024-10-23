@@ -26,4 +26,8 @@ public class Player {
         this.clanId = clanId;
         this.lastUpdated = lastUpdated;
     }
+
+    public void updateName(String newName) {
+        this.name = newName;
+    }
 }
