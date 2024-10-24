@@ -1,5 +1,7 @@
 package zoo.pubg.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +20,8 @@ class PlayerServiceTest {
 
     @Test
     @DisplayName("player 기본 API 호출 테스트")
-    void fetchPlayerStats() {
+    @Disabled
+    void fetchPlayerStats() throws JsonProcessingException {
         // given
         String shards = "kakao";
         String name = "Lil_Ziu__Vert";

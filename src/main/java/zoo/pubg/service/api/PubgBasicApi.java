@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "pubgBasicAPI", url = "https://api.pubg.com")
-public interface PUBGBasicAPI {
+public interface PubgBasicApi {
 
     @GetMapping("/shards/{shards}/players")
     String fetchPlayerStats(
