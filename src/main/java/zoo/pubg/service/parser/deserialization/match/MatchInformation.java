@@ -38,6 +38,7 @@ public class MatchInformation {
 
     private String getTelemetryUrl() {
         for (Included inc : included) {
+            System.out.println(inc);
             if (inc instanceof Asset asset) {
                 return asset.getTelemetryUrl();
             }
