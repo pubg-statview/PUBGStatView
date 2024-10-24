@@ -13,7 +13,7 @@ public class RosterMatchResult {
 
     private int rank;
     private int teamId;
-    private String playerId;
+    private String playerMatchId;
 
     @ManyToOne
     @JoinColumn(name = "matchId", referencedColumnName = "matchId")
