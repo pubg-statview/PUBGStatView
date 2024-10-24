@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.domain.Player;
 import zoo.pubg.repository.PlayerRepository;
 import zoo.pubg.service.api.PubgBasicApi;
-import zoo.pubg.service.dto.player.PlayerData;
-import zoo.pubg.service.dto.player.PlayerDto;
+import zoo.pubg.service.parser.deserialization.player.PlayerData;
+import zoo.pubg.service.parser.deserialization.player.PlayerDto;
 import zoo.pubg.service.parser.PlayerApiParser;
 
 @Service

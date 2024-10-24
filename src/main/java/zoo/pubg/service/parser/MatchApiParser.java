@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import zoo.pubg.service.dto.match.MatchInformation;
+import zoo.pubg.service.parser.deserialization.match.MatchInformation;
 
 public class MatchApiParser extends ApiParser<MatchInformation> {
 

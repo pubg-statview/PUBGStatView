@@ -6,8 +6,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import zoo.pubg.domain.Player;
-import zoo.pubg.service.dto.player.PlayerData;
-import zoo.pubg.service.dto.player.PlayerDto;
+import zoo.pubg.service.parser.deserialization.player.PlayerData;
+import zoo.pubg.service.parser.deserialization.player.PlayerDto;
 
 class PlayerApiParserTest {
 
