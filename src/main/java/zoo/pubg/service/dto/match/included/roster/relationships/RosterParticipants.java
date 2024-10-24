@@ -1,9 +1,8 @@
 package zoo.pubg.service.dto.match.included.roster.relationships;
 
 import java.util.List;
-import zoo.pubg.service.dto.match.included.roster.relationships.participants.RosterData;
+import zoo.pubg.service.dto.match.included.roster.relationships.participants.RosterParticipantData;
 
-public class RosterParticipants {
+public record RosterParticipants(List<RosterParticipantData> data) {
 
-    private List<RosterData> data;
 }

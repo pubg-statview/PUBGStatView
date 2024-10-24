@@ -1,4 +1,10 @@
 package zoo.pubg.service.dto.match.data;
 
-public record Data(String id, MatchAttributes attributes) {
+import lombok.Getter;
+
+@Getter
+public class Data {
+
+    private String id;
+    private MatchAttributes attributes;
 }

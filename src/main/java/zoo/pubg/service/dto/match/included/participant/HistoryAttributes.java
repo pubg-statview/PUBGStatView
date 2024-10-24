@@ -1,6 +1,5 @@
 package zoo.pubg.service.dto.match.included.participant;
 
-public class HistoryAttributes {
+public record HistoryAttributes(PlayerMatchStats stats) {
 
-    private PlayerMatchStats stats;
 }
