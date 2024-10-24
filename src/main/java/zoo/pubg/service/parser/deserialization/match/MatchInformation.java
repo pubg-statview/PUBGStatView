@@ -1,14 +1,19 @@
 package zoo.pubg.service.parser.deserialization.match;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
-import zoo.pubg.domain.Match;
-import zoo.pubg.domain.PlayerMatchResult;
+import zoo.pubg.service.dto.AssetDto;
+import zoo.pubg.service.dto.DeserializedMatchDto;
+import zoo.pubg.service.dto.IncludedDto;
+import zoo.pubg.service.dto.MatchDataDto;
+import zoo.pubg.service.dto.ParticipantDto;
+import zoo.pubg.service.dto.RosterDto;
 import zoo.pubg.service.parser.deserialization.match.data.Data;
-import zoo.pubg.service.parser.deserialization.match.data.MatchAttributes;
 import zoo.pubg.service.parser.deserialization.match.included.Asset;
 import zoo.pubg.service.parser.deserialization.match.included.Included;
 import zoo.pubg.service.parser.deserialization.match.included.Participant;
+import zoo.pubg.service.parser.deserialization.match.included.Roster;
 
 @Getter
 public class MatchInformation {
@@ -16,33 +21,31 @@ public class MatchInformation {
     private Data data;
     private List<Included> included;
 
-    public Match getMatchEntity() {
-        MatchAttributes attributes = data.getAttributes();
-        return new Match(
-                data.getId(),
-                attributes.mapName(),
-                attributes.gameMode(),
-                attributes.matchType(),
-                attributes.duration(),
-                getTelemetryUrl(),
-                attributes.createdAt().toLocalDateTime()
+    public DeserializedMatchDto toDto() {
+        return new DeserializedMatchDto(
+                getMatchDataDto(), getIncludedDto()
         );
     }
 
-    public List<PlayerMatchResult> getPlayerMatchResult() {
-        included.stream()
-                .filter(p -> (p instanceof Participant))
-                .map(p -> p);
-        return List.of();
+    private MatchDataDto getMatchDataDto() {
+        return data.toDto();
     }
 
-    private String getTelemetryUrl() {
+    private IncludedDto getIncludedDto() {
+        List<AssetDto> assetDtos = new ArrayList<>();
+        List<ParticipantDto> participantDtos = new ArrayList<>();
+        List<RosterDto> rosterDtos = new ArrayList<>();
+
         for (Included inc : included) {
-            System.out.println(inc);
             if (inc instanceof Asset asset) {
-                return asset.getTelemetryUrl();
+                assetDtos.add(asset.toDto());
+            } else if (inc instanceof Participant participant) {
+                participantDtos.add(participant.toDto());
+            } else if (inc instanceof Roster roster) {
+                rosterDtos.add(roster.toDto());
             }
         }
-        throw new IllegalArgumentException("asset 없음");
+
+        return new IncludedDto(assetDtos, participantDtos, rosterDtos);
     }
 }
