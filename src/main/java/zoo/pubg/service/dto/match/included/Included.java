@@ -13,5 +13,5 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
         @JsonSubTypes.Type(value = Roster.class, name = "roster"),
         @JsonSubTypes.Type(value = Asset.class, name = "asset")
 })
-public abstract class Includes {
+public abstract class Included {
 }
