@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
-import zoo.pubg.service.dto.match.MatchDto;
+import zoo.pubg.service.dto.match.MatchInformation;
 
 class MatchApiParserTest {
 
@@ -145,12 +145,12 @@ class MatchApiParserTest {
 
     @Test
     void parseTest() throws JsonProcessingException {
-        MatchDto matchDto = parser.parse(json);
+        MatchInformation matchInformation = parser.parse(json);
 
-        String matchId = matchDto.data().id(); //    b79c05af-bfb3-4744-b9d2-9ccdbe4c0746
-        String mapName = matchDto.data().attributes().getMapName(); // Baltic_Main
+        String matchId = matchInformation.getData().id(); //    b79c05af-bfb3-4744-b9d2-9ccdbe4c0746
+        String mapName = matchInformation.getData().attributes().getMapName(); // Baltic_Main
 
-        int includesSize = matchDto.included().size();
+        int includesSize = matchInformation.getIncluded().size();
 
         assertThat(matchId).isEqualTo("b79c05af-bfb3-4744-b9d2-9ccdbe4c0746");
         assertThat(mapName).isEqualTo("Baltic_Main");

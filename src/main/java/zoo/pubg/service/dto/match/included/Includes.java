@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 @JsonTypeInfo(
         use = Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
         property = "type"
 )
 @JsonSubTypes({
@@ -15,5 +14,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
         @JsonSubTypes.Type(value = Asset.class, name = "asset")
 })
 public abstract class Includes {
-    protected String type;
 }
