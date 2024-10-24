@@ -19,7 +19,7 @@ public class PlayerMatchResult {
 
     @ManyToOne
     @JoinColumn(name = "matchId", referencedColumnName = "matchId")
-    private MatchHistory match;
+    private Match match;
 
     private int dbno;
     private float damageDealt;

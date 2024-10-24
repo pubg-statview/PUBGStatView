@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Entity
 @Getter
-public class MatchHistory {
+public class Match {
 
     @Id
     private String matchId;
