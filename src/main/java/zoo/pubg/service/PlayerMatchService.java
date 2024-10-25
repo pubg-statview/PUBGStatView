@@ -25,6 +25,9 @@ public class PlayerMatchService {
     private PlayerService playerService;
 
     public void fetch(Match match, List<ParticipantDto> participantDtos) throws JsonProcessingException {
+        participantDtos = participantDtos.stream()
+                .filter(p -> p.playerId().split("\\.")[0].equals("account"))
+                .toList();  // 일반 봇 임시로 처리
         fetchUnregisterPlayer(match.getShardId(), participantDtos);
         participantDtos.forEach(dto -> fetch(match, dto));
     }
