@@ -12,10 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional
-class PlayerMatchServiceTest {
+class MatchServiceTest {
 
     @Autowired
-    private PlayerMatchService playerMatchService;
+    private MatchService matchService;
 
     @Test
     @DisplayName("player 기본 API 호출 테스트")
@@ -25,7 +25,7 @@ class PlayerMatchServiceTest {
         String matchId = "b79c05af-bfb3-4744-b9d2-9ccdbe4c0746";
 
         // when
-        String s = playerMatchService.fetchMatchHistory(shards, matchId);
+        String s = matchService.fetchMatchHistory(shards, matchId);
         System.out.println(s);
 
     }
