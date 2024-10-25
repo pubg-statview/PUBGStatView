@@ -29,6 +29,7 @@ public class PlayerMatchResult {
     private float damageDealt;
     private int headshotKills;
     private int kills;
+    private int assists;
     private float longestKill;
     private int winPlace;
 }
