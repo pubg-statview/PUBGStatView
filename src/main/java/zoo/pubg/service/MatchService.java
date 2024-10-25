@@ -30,7 +30,7 @@ public class MatchService {
     private PlayerMatchService playerMatchService;
 
     @Transactional
-    public String fetchMatchHistory(String shards, String matchId) throws JsonProcessingException {
+    public void fetchMatchHistory(String shards, String matchId) throws JsonProcessingException {
         String response = pubgBasicApi.fetchPlayerMatch(shards, matchId);
         DeserializedMatchDto deserializedMatchDto = deserialize(response);
         MatchDataDto matchDataDto = deserializedMatchDto.matchDataDto();
@@ -44,12 +44,10 @@ public class MatchService {
         );
         matchRepository.save(match);
         playerMatchService.fetch(match, includedDto.participantDtos());
-        return response;
     }
 
     private DeserializedMatchDto deserialize(String response) throws JsonProcessingException {
         MatchInformation result = parser.parse(response);
         return result.toDto();
     }
-
 }
