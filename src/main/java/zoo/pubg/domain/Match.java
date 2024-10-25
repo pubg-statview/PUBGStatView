@@ -19,6 +19,7 @@ public class Match {
     private String mapName;
     private String gameMode;
     private String matchType;
+    private String shardId;
     private int duration;
     private String telemetryURL;
     private LocalDateTime createdAt;

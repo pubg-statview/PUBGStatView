@@ -11,7 +11,7 @@ public class Data {
 
     public MatchDataDto toDto() {
         return new MatchDataDto(
-                id, attributes.mapName(), attributes.gameMode(), attributes.matchType(),
+                id, attributes.mapName(), attributes.gameMode(), attributes.matchType(), attributes.shardId(),
                 attributes.duration(), attributes.createdAt().toLocalDateTime()
         );
     }
