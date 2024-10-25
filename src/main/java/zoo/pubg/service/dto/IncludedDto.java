@@ -7,4 +7,11 @@ public record IncludedDto(
         List<ParticipantDto> participantDtos,
         List<RosterDto> rosterDtos
 ) {
+
+    public String getTelemetryUrl() {
+        if (assetDtos.size() == 0) {
+            return "";
+        }
+        return assetDtos.get(0).url();
+    }
 }
