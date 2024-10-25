@@ -4,15 +4,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import zoo.pubg.service.dto.match.MatchDto;
+import zoo.pubg.service.parser.deserialization.match.MatchInformation;
 
-public class MatchApiParser extends ApiParser<MatchDto> {
+public class MatchApiParser extends ApiParser<MatchInformation> {
 
     @Override
-    public MatchDto parse(String responseText) throws JsonProcessingException {
+    public MatchInformation parse(String responseText) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.registerModule(new JavaTimeModule());
-        return mapper.readValue(responseText, MatchDto.class);
+        return mapper.readValue(responseText, MatchInformation.class);
     }
 }

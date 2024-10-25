@@ -9,9 +9,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface PubgBasicApi {
 
     @GetMapping("/shards/{shards}/players")
-    String fetchPlayerStats(
+    String fetchPlayerStatsByName(
             @PathVariable("shards") String shards,
             @RequestParam("filter[playerNames]") String playerName
+    );
+
+    @GetMapping("/shards/{shards}/players")
+    String fetchPlayerStatsById(
+            @PathVariable("shards") String shards,
+            @RequestParam("filter[playerIds]") String playerName
     );
 
     @GetMapping("/shards/{shards}/matches/{matchId}")

@@ -3,7 +3,7 @@ package zoo.pubg.service.parser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import zoo.pubg.service.dto.player.PlayerDto;
+import zoo.pubg.service.parser.deserialization.player.PlayerDto;
 
 public class PlayerApiParser extends ApiParser<PlayerDto> {
 

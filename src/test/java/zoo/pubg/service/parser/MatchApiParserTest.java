@@ -4,7 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
-import zoo.pubg.service.dto.match.MatchDto;
+import zoo.pubg.service.dto.AssetDto;
+import zoo.pubg.service.dto.DeserializedMatchDto;
+import zoo.pubg.service.dto.IncludedDto;
+import zoo.pubg.service.dto.MatchDataDto;
+import zoo.pubg.service.dto.ParticipantDto;
+import zoo.pubg.service.dto.RosterDto;
+import zoo.pubg.service.parser.deserialization.match.MatchInformation;
 
 class MatchApiParserTest {
 
@@ -144,18 +150,48 @@ class MatchApiParserTest {
     private final MatchApiParser parser = new MatchApiParser();
 
     @Test
-    void parseTest() throws JsonProcessingException {
-        MatchDto matchDto = parser.parse(json);
+    void matchDataParseTest() throws JsonProcessingException {
+        MatchInformation matchInformation = parser.parse(json);
+        DeserializedMatchDto matchDto = matchInformation.toDto();
+        MatchDataDto matchDataDto = matchDto.matchDataDto();
 
-        String matchId = matchDto.data().id(); //    b79c05af-bfb3-4744-b9d2-9ccdbe4c0746
-        String mapName = matchDto.data().attributes().getMapName(); // Baltic_Main
-
-        int includesSize = matchDto.included().size();
-
-        assertThat(matchId).isEqualTo("b79c05af-bfb3-4744-b9d2-9ccdbe4c0746");
-        assertThat(mapName).isEqualTo("Baltic_Main");
-        assertThat(includesSize).isEqualTo(3);
-
+        assertThat(matchDataDto.matchId()).isEqualTo("b79c05af-bfb3-4744-b9d2-9ccdbe4c0746");
+        assertThat(matchDataDto.mapName()).isEqualTo("Baltic_Main");
     }
+
+    @Test
+    void participantParseTest() throws JsonProcessingException {
+        MatchInformation matchInformation = parser.parse(json);
+        DeserializedMatchDto matchDto = matchInformation.toDto();
+        IncludedDto includedDto = matchDto.includedDto();
+        ParticipantDto participantDtos = includedDto.participantDtos().get(0);
+
+        assertThat(participantDtos.playerMatchId()).isEqualTo("b95daaf8-4f44-446f-95d7-2f2665291b7e");
+        assertThat(participantDtos.playerId()).isEqualTo("account.11242cc329fc4ca09a21a6f96b5337a4");
+        assertThat(participantDtos.dbno()).isEqualTo(0);
+    }
+
+    @Test
+    void rosterParseTest() throws JsonProcessingException {
+        MatchInformation matchInformation = parser.parse(json);
+        DeserializedMatchDto matchDto = matchInformation.toDto();
+        IncludedDto includedDto = matchDto.includedDto();
+        RosterDto rosterDto = includedDto.rosterDtos().get(0);
+
+        assertThat(rosterDto.rosterId()).isEqualTo("b180098c-7842-4aa1-8d0d-323d73216a54");
+        assertThat(rosterDto.rank()).isEqualTo(14);
+        assertThat(rosterDto.playerMatchId().get(0)).isEqualTo("81af3159-43c3-4130-a64f-3c44ad76ce92");
+    }
+
+    @Test
+    void assetParseTest() throws JsonProcessingException {
+        MatchInformation matchInformation = parser.parse(json);
+        DeserializedMatchDto matchDto = matchInformation.toDto();
+        AssetDto assetDto = matchDto.includedDto().assetDtos().get(0);
+
+        assertThat(assetDto.url()).isEqualTo(
+                "https://telemetry-cdn.pubg.com/bluehole-pubg/kakao/2024/10/18/16/29/2b177796-8d6e-11ef-aae5-8e2d0dc0c1b1-telemetry.json");
+    }
+
 
 }

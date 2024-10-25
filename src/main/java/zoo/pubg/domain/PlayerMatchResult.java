@@ -4,10 +4,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PlayerMatchResult {
 
     @Id
@@ -19,12 +23,13 @@ public class PlayerMatchResult {
 
     @ManyToOne
     @JoinColumn(name = "matchId", referencedColumnName = "matchId")
-    private MatchHistory match;
+    private Match match;
 
     private int dbno;
     private float damageDealt;
     private int headshotKills;
     private int kills;
+    private int assists;
     private float longestKill;
     private int winPlace;
 }

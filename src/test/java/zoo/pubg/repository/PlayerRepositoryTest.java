@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -38,6 +40,21 @@ class PlayerRepositoryTest {
         assertThat(player.getName()).isEqualTo(name);
     }
 
+    @ParameterizedTest
+    @DisplayName("id로 존재 유무 확인")
+    @CsvSource(value = {
+            "12345678,true",
+            "11111111,false"
+    })
+    void findByIdTest(String playerId, boolean answer) {
+        Player player = new Player(
+                "12345678", "name", "kakao", "clanId", LocalDateTime.now()
+        );
+        repository.save(player);
+
+        assertThat(repository.isExistsId(playerId)).isEqualTo(answer);
+    }
+
     @Test
     @DisplayName("저장하려는 이름이 이미 있지만 id가 서로 다르다면, 기존의 이름을 가진 player 이름 업데이트 후 저장")
     void duplicatedNameSave() {
@@ -57,7 +74,6 @@ class PlayerRepositoryTest {
         Player player2 = repository.find(player.getPlayerId());
 
         // then
-
         assertThat(player1.getName()).isEqualTo(playerWhoChangedName.getPlayerId());
         assertThat(player2.getName()).isEqualTo(player.getName());
 
@@ -81,6 +97,5 @@ class PlayerRepositoryTest {
 
         // then
         assertThat(result.getName()).isEqualTo(player.getName());
-
     }
 }
