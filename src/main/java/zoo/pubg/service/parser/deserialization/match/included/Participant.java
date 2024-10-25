@@ -18,7 +18,7 @@ public class Participant extends Included {
         return new ParticipantDto(
                 id, stats.playerId(),
                 stats.dbno(), stats.assists(), stats.kills(), stats.headshotKills(),
-                stats.damageDealt(), stats.longestKill()
+                stats.damageDealt(), stats.longestKill(), stats.winPlace()
         );
     }
 }
