@@ -57,7 +57,6 @@ class PlayerRepositoryTest {
         Player player2 = repository.find(player.getPlayerId());
 
         // then
-
         assertThat(player1.getName()).isEqualTo(playerWhoChangedName.getPlayerId());
         assertThat(player2.getName()).isEqualTo(player.getName());
 
@@ -81,6 +80,5 @@ class PlayerRepositoryTest {
 
         // then
         assertThat(result.getName()).isEqualTo(player.getName());
-
     }
 }

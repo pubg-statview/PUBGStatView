@@ -42,7 +42,6 @@ public class PlayerRepository {
             Player found = findByName(player.getName());
             if (!found.getPlayerId().equals(player.getPlayerId())) {
                 found.updateName(found.getPlayerId());
-                em.merge(found);
             }
         } catch (NoResultException ignored) {
 
