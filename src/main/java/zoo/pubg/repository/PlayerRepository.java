@@ -17,6 +17,10 @@ public class PlayerRepository {
         return find(player.getPlayerId()) != null;
     }
 
+    public boolean isExistsId(String id) {
+        return find(id) != null;
+    }
+
     public Player find(String playerId) {
         return em.find(Player.class, playerId);
     }
