@@ -21,13 +21,13 @@ class PlayerServiceTest {
     @Test
     @DisplayName("player 기본 API 호출 테스트")
     @Disabled
-    void fetchPlayerStats() throws JsonProcessingException {
+    void fetchPlayerTest() throws JsonProcessingException {
         // given
         String shards = "kakao";
         String name = "Lil_Ziu__Vert";
 
         // when
-        String s = playerService.fetchPlayerStats(shards, name);
+        String s = playerService.fetchPlayer(shards, name);
         System.out.println(s);
 
     }

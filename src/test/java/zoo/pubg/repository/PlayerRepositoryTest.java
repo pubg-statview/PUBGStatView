@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -36,6 +38,21 @@ class PlayerRepositoryTest {
 
         // then
         assertThat(player.getName()).isEqualTo(name);
+    }
+
+    @ParameterizedTest
+    @DisplayName("id로 존재 유무 확인")
+    @CsvSource(value = {
+            "12345678,true",
+            "11111111,false"
+    })
+    void findByIdTest(String playerId, boolean answer) {
+        Player player = new Player(
+                "12345678", "name", "kakao", "clanId", LocalDateTime.now()
+        );
+        repository.save(player);
+
+        assertThat(repository.isExistsId(playerId)).isEqualTo(answer);
     }
 
     @Test
