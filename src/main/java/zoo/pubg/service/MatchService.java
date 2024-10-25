@@ -31,6 +31,9 @@ public class MatchService {
 
     @Transactional
     public void fetchMatchHistory(String shards, String matchId) throws JsonProcessingException {
+        if (matchRepository.isExists(matchId)) {
+            return;
+        }
         String response = pubgBasicApi.fetchPlayerMatch(shards, matchId);
         DeserializedMatchDto deserializedMatchDto = deserialize(response);
         MatchDataDto matchDataDto = deserializedMatchDto.matchDataDto();
