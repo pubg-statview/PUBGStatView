@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.domain.Player;
+import zoo.pubg.vo.PlayerName;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -26,7 +27,8 @@ class PlayerRepositoryTest {
     @DisplayName("플레이어 이름으로 엔티티 검색")
     void findByNameTest() {
         String playerId = "12345678";
-        String name = "playerName";
+
+        PlayerName name = new PlayerName("playerName");
         // given
         Player player = new Player(
                 playerId, name, "kakao", "clanId", LocalDateTime.now()
@@ -48,7 +50,7 @@ class PlayerRepositoryTest {
     })
     void findByIdTest(String playerId, boolean answer) {
         Player player = new Player(
-                "12345678", "name", "kakao", "clanId", LocalDateTime.now()
+                "12345678", new PlayerName("name"), "kakao", "clanId", LocalDateTime.now()
         );
         repository.save(player);
 
@@ -60,11 +62,11 @@ class PlayerRepositoryTest {
     void duplicatedNameSave() {
         // given
         Player playerWhoChangedName = new Player(
-                "playerId.aaa", "AAA", "kakao", "clanId.123", LocalDateTime.now()
+                "account.aaa", new PlayerName("AAAAAA"), "kakao", "clanId.123", LocalDateTime.now()
         );
         repository.save(playerWhoChangedName);
         Player player = new Player(
-                "playerId.bbb", "AAA", "kakao", "clanId.123", LocalDateTime.now()
+                "account.bbb", new PlayerName("AAAAAA"), "kakao", "clanId.123", LocalDateTime.now()
         );
 
         // when
@@ -74,7 +76,7 @@ class PlayerRepositoryTest {
         Player player2 = repository.find(player.getPlayerId());
 
         // then
-        assertThat(player1.getName()).isEqualTo(playerWhoChangedName.getPlayerId());
+        assertThat(player1.getName()).isEqualTo(playerWhoChangedName.getName());
         assertThat(player2.getName()).isEqualTo(player.getName());
 
     }
@@ -84,11 +86,11 @@ class PlayerRepositoryTest {
     void alreadyExistsId() {
         // given
         Player originalPlayer = new Player(
-                "playerId.aaa", "AAA", "kakao", "clanId.123", LocalDateTime.now()
+                "account.aaa", new PlayerName("AAAAAA"), "kakao", "clan.123", LocalDateTime.now()
         );
         repository.save(originalPlayer);
         Player player = new Player(
-                "playerId.aaa", "BBB", "kakao", "clanId.123", LocalDateTime.now()
+                "account.aaa", new PlayerName("BBBBBB"), "kakao", "clan.123", LocalDateTime.now()
         );
 
         // when

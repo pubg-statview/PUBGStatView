@@ -13,6 +13,7 @@ import zoo.pubg.service.api.PubgBasicApi;
 import zoo.pubg.service.parser.PlayerApiParser;
 import zoo.pubg.service.parser.deserialization.player.PlayerData;
 import zoo.pubg.service.parser.deserialization.player.PlayerDto;
+import zoo.pubg.vo.PlayerName;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -27,7 +28,7 @@ public class PlayerService {
     private PlayerRepository playerRepository;
 
     @Transactional(readOnly = true)
-    public Player searchPlayer(String name) {
+    public Player searchPlayer(PlayerName name) {
         return playerRepository.findByName(name);
     }
 
