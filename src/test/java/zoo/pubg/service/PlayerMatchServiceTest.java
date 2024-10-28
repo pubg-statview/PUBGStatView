@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
+import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Match;
 import zoo.pubg.repository.MatchRepository;
 import zoo.pubg.service.dto.ParticipantDto;
@@ -41,7 +42,7 @@ class PlayerMatchServiceTest {
     private final Match match = new Match(
             "90cc5f77-5d9a-4473-88b4-e55659120632", "Baltic_Main",
             "squad", "competitive",
-            "kakao", 1916, "url", LocalDateTime.now()
+            Shards.KAKAO, 1916, "url", LocalDateTime.now()
     );
 
     @Autowired

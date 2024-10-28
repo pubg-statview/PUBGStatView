@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
+import zoo.pubg.constant.Shards;
 import zoo.pubg.service.dto.AssetDto;
 import zoo.pubg.service.dto.DeserializedMatchDto;
 import zoo.pubg.service.dto.IncludedDto;
@@ -157,6 +158,7 @@ class MatchApiParserTest {
 
         assertThat(matchDataDto.matchId()).isEqualTo("b79c05af-bfb3-4744-b9d2-9ccdbe4c0746");
         assertThat(matchDataDto.mapName()).isEqualTo("Baltic_Main");
+        assertThat(matchDataDto.shardId()).isEqualTo(Shards.KAKAO);
     }
 
     @Test

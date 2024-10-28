@@ -1,12 +1,15 @@
 package zoo.pubg.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import zoo.pubg.constant.Shards;
 
 @Entity
 @Getter
@@ -21,7 +24,9 @@ public class Match {
     private String mapName;
     private String gameMode;
     private String matchType;
-    private String shardId;
+
+    @Enumerated(EnumType.STRING)
+    private Shards shardId;
     private int duration;
     private String telemetryURL;
     private LocalDateTime createdAt;

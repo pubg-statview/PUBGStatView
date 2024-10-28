@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Match;
 import zoo.pubg.domain.Player;
 import zoo.pubg.domain.PlayerMatchResult;
@@ -43,8 +44,9 @@ public class PlayerMatchService {
         playerMatchRepository.save(playerMatchResult);
     }
 
-    private void fetchUnregisterPlayer(String shards, List<ParticipantDto> participantDtos)
+    private void fetchUnregisterPlayer(Shards shards, List<ParticipantDto> participantDtos)
             throws JsonProcessingException {
+        final String shardName = shards.getShardName();
         List<String> unregisterIds = new ArrayList<>();
         for (ParticipantDto participantDto : participantDtos) {
             String id = participantDto.playerId();
@@ -53,12 +55,12 @@ public class PlayerMatchService {
             }
             unregisterIds.add(id);
             if (unregisterIds.size() == 10) {
-                playerService.fetchPlayers(shards, unregisterIds);
+                playerService.fetchPlayers(shardName, unregisterIds);
                 unregisterIds.clear();
             }
         }
         if (unregisterIds.size() <= 10) {
-            playerService.fetchPlayers(shards, unregisterIds);
+            playerService.fetchPlayers(shardName, unregisterIds);
         }
     }
 }
