@@ -29,11 +29,11 @@ public class PlayerMatchResult {
     @JoinColumn(name = "matchId", referencedColumnName = "matchId")
     private Match match;
 
-    private int dbno;
-    private float damageDealt;
-    private int headshotKills;
-    private int kills;
-    private int assists;
-    private float longestKill;
-    private int winPlace;
+    private Integer dbno;
+    private Float damageDealt;
+    private Integer headshotKills;
+    private Integer kills;
+    private Integer assists;
+    private Float longestKill;
+    private Integer winPlace;
 }
