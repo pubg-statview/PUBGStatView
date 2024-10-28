@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
+import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Player;
 import zoo.pubg.vo.PlayerName;
 
@@ -19,6 +20,8 @@ import zoo.pubg.vo.PlayerName;
 @SpringBootTest
 @Transactional
 class PlayerRepositoryTest {
+
+    private final static Shards shards = Shards.KAKAO;
 
     @Autowired
     private PlayerRepository repository;
@@ -31,7 +34,7 @@ class PlayerRepositoryTest {
         PlayerName name = new PlayerName("playerName");
         // given
         Player player = new Player(
-                playerId, name, "kakao", "clanId", LocalDateTime.now()
+                playerId, name, shards, "clanId", LocalDateTime.now()
         );
         repository.save(player);
 
@@ -50,7 +53,7 @@ class PlayerRepositoryTest {
     })
     void findByIdTest(String playerId, boolean answer) {
         Player player = new Player(
-                "12345678", new PlayerName("name"), "kakao", "clanId", LocalDateTime.now()
+                "12345678", new PlayerName("name"), shards, "clanId", LocalDateTime.now()
         );
         repository.save(player);
 
@@ -62,11 +65,11 @@ class PlayerRepositoryTest {
     void duplicatedNameSave() {
         // given
         Player playerWhoChangedName = new Player(
-                "account.aaa", new PlayerName("AAAAAA"), "kakao", "clanId.123", LocalDateTime.now()
+                "account.aaa", new PlayerName("AAAAAA"), shards, "clanId.123", LocalDateTime.now()
         );
         repository.save(playerWhoChangedName);
         Player player = new Player(
-                "account.bbb", new PlayerName("AAAAAA"), "kakao", "clanId.123", LocalDateTime.now()
+                "account.bbb", new PlayerName("AAAAAA"), shards, "clanId.123", LocalDateTime.now()
         );
 
         // when
@@ -86,11 +89,11 @@ class PlayerRepositoryTest {
     void alreadyExistsId() {
         // given
         Player originalPlayer = new Player(
-                "account.aaa", new PlayerName("AAAAAA"), "kakao", "clan.123", LocalDateTime.now()
+                "account.aaa", new PlayerName("AAAAAA"), shards, "clan.123", LocalDateTime.now()
         );
         repository.save(originalPlayer);
         Player player = new Player(
-                "account.aaa", new PlayerName("BBBBBB"), "kakao", "clan.123", LocalDateTime.now()
+                "account.aaa", new PlayerName("BBBBBB"), shards, "clan.123", LocalDateTime.now()
         );
 
         // when

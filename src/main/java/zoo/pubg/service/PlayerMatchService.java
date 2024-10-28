@@ -46,7 +46,6 @@ public class PlayerMatchService {
 
     private void fetchUnregisterPlayer(Shards shards, List<ParticipantDto> participantDtos)
             throws JsonProcessingException {
-        final String shardName = shards.getShardName();
         List<String> unregisterIds = new ArrayList<>();
         for (ParticipantDto participantDto : participantDtos) {
             String id = participantDto.playerId();
@@ -55,12 +54,12 @@ public class PlayerMatchService {
             }
             unregisterIds.add(id);
             if (unregisterIds.size() == 10) {
-                playerService.fetchPlayers(shardName, unregisterIds);
+                playerService.fetchPlayersByIds(shards, unregisterIds);
                 unregisterIds.clear();
             }
         }
         if (unregisterIds.size() <= 10) {
-            playerService.fetchPlayers(shardName, unregisterIds);
+            playerService.fetchPlayersByIds(shards, unregisterIds);
         }
     }
 }

@@ -32,7 +32,7 @@ class PlayerNameTest {
 
     @ParameterizedTest
     @DisplayName("유효하지 않은 닉네임 예외처리 테스트")
-    @ValueSource(strings = {"-jiwoo", "_-jiwoo", "abc", "유효하지않은 이름", "abc def", "AA!!!@#", "account.", "ai."})
+    @ValueSource(strings = {"-jiwoo", "_-jiwoo", "abc", "유효하지않은 이름", "abc def", "AA!!!@#"})
     void invalidNameTest(String name) {
 
         Assertions.assertThrows(

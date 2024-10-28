@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.constant.Shards;
@@ -53,7 +52,6 @@ class PlayerMatchServiceTest {
 
     @Test
     @DisplayName("여러명의 id가 들어왔을 때, 이미 있는 id는 스킵하고 잘 처리하는 지 테스트")
-    @Commit
     void fetchTest() throws JsonProcessingException {
         repository.save(match);
         service.fetch(match, makeInput(ids));

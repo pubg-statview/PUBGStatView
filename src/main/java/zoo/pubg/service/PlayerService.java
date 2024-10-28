@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Player;
 import zoo.pubg.repository.PlayerRepository;
 import zoo.pubg.service.api.PubgBasicApi;
 import zoo.pubg.service.parser.PlayerApiParser;
 import zoo.pubg.service.parser.deserialization.player.PlayerData;
 import zoo.pubg.service.parser.deserialization.player.PlayerDto;
+import zoo.pubg.vo.MatchId;
 import zoo.pubg.vo.PlayerName;
 
 @Service
@@ -32,14 +34,15 @@ public class PlayerService {
         return playerRepository.findByName(name);
     }
 
-    public String fetchPlayer(String shards, String name) throws JsonProcessingException {
-        String responseString = pubgBasicAPI.fetchPlayerStatsByName(shards, name);
+    public List<MatchId> fetchPlayer(Shards shards, PlayerName name) throws JsonProcessingException {
+        String responseString = pubgBasicAPI.fetchPlayerStatsByName(shards.getShardName(), name.getName());
         PlayerDto playerDto = parser.parse(responseString);
-
-        return responseString;
+        PlayerData data = playerDto.getFirstPlayer();
+        playerRepository.save(data.toEntity());
+        return data.getMatchIds();
     }
 
-    public void fetchPlayers(String shards, List<String> ids) throws JsonProcessingException {
+    public void fetchPlayersByIds(Shards shards, List<String> ids) throws JsonProcessingException {
         if (ids.isEmpty()) {
             return;
         }
@@ -47,7 +50,7 @@ public class PlayerService {
             throw new IllegalArgumentException("10개 이하여야함 (API 제한)");
         }
         String joinId = String.join(",", ids);
-        String response = pubgBasicAPI.fetchPlayerStatsById(shards, joinId);
+        String response = pubgBasicAPI.fetchPlayerStatsById(shards.getShardName(), joinId);
         PlayerDto playerDto = parser.parse(response);
         for (PlayerData data : playerDto.data()) {
             Player player = data.toEntity();
