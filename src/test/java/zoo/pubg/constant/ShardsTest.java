@@ -18,7 +18,7 @@ class ShardsTest {
         Shards shards = Shards.of(shardsName);
 
         //then
-        assertThat(shards).isEqualTo(Shards.KAKAO);
+        assertThat(shards.getShardName()).isEqualTo(shardsName);
     }
 
     @Test
