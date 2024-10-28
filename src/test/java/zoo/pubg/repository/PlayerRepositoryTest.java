@@ -12,12 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
+import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Player;
+import zoo.pubg.vo.PlayerId;
+import zoo.pubg.vo.PlayerName;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional
 class PlayerRepositoryTest {
+
+    private final static Shards shards = Shards.KAKAO;
 
     @Autowired
     private PlayerRepository repository;
@@ -25,11 +30,11 @@ class PlayerRepositoryTest {
     @Test
     @DisplayName("플레이어 이름으로 엔티티 검색")
     void findByNameTest() {
-        String playerId = "12345678";
-        String name = "playerName";
         // given
+        PlayerId playerId = new PlayerId("12345678");
+        PlayerName name = new PlayerName("playerName");
         Player player = new Player(
-                playerId, name, "kakao", "clanId", LocalDateTime.now()
+                playerId, name, shards, "clanId", LocalDateTime.now()
         );
         repository.save(player);
 
@@ -46,9 +51,10 @@ class PlayerRepositoryTest {
             "12345678,true",
             "11111111,false"
     })
-    void findByIdTest(String playerId, boolean answer) {
+    void findByIdTest(String id, boolean answer) {
+        PlayerId playerId = new PlayerId(id);
         Player player = new Player(
-                "12345678", "name", "kakao", "clanId", LocalDateTime.now()
+                new PlayerId("12345678"), new PlayerName("name"), shards, "clanId", LocalDateTime.now()
         );
         repository.save(player);
 
@@ -60,11 +66,13 @@ class PlayerRepositoryTest {
     void duplicatedNameSave() {
         // given
         Player playerWhoChangedName = new Player(
-                "playerId.aaa", "AAA", "kakao", "clanId.123", LocalDateTime.now()
+                new PlayerId("account.aaa"), new PlayerName("AAAAAA"),
+                shards, "clanId.123", LocalDateTime.now()
         );
         repository.save(playerWhoChangedName);
         Player player = new Player(
-                "playerId.bbb", "AAA", "kakao", "clanId.123", LocalDateTime.now()
+                new PlayerId("account.bbb"), new PlayerName("AAAAAA"),
+                shards, "clanId.123", LocalDateTime.now()
         );
 
         // when
@@ -74,7 +82,7 @@ class PlayerRepositoryTest {
         Player player2 = repository.find(player.getPlayerId());
 
         // then
-        assertThat(player1.getName()).isEqualTo(playerWhoChangedName.getPlayerId());
+        assertThat(player1.getName()).isEqualTo(playerWhoChangedName.getName());
         assertThat(player2.getName()).isEqualTo(player.getName());
 
     }
@@ -84,11 +92,13 @@ class PlayerRepositoryTest {
     void alreadyExistsId() {
         // given
         Player originalPlayer = new Player(
-                "playerId.aaa", "AAA", "kakao", "clanId.123", LocalDateTime.now()
+                new PlayerId("account.aaa"), new PlayerName("AAAAAA"),
+                shards, "clan.123", LocalDateTime.now()
         );
         repository.save(originalPlayer);
         Player player = new Player(
-                "playerId.aaa", "BBB", "kakao", "clanId.123", LocalDateTime.now()
+                new PlayerId("account.aaa"), new PlayerName("BBBBBB"),
+                shards, "clan.123", LocalDateTime.now()
         );
 
         // when

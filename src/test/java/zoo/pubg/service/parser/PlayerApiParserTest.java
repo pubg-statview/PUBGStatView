@@ -5,9 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Player;
 import zoo.pubg.service.parser.deserialization.player.PlayerData;
 import zoo.pubg.service.parser.deserialization.player.PlayerDto;
+import zoo.pubg.vo.MatchId;
+import zoo.pubg.vo.PlayerId;
 
 class PlayerApiParserTest {
 
@@ -66,12 +69,12 @@ class PlayerApiParserTest {
         PlayerData playerData = playerDto.data().get(0);
         Player player = playerData.toEntity();
 
-        assertThat(player.getPlayerId()).isEqualTo("account.a164c65de7bd46f3a0101d4b8ad4a626");
-        assertThat(player.getName()).isEqualTo("Lil_Ziu__Vert");
-        assertThat(player.getShardId()).isEqualTo("kakao");
+        assertThat(player.getPlayerId()).isEqualTo(new PlayerId("account.a164c65de7bd46f3a0101d4b8ad4a626"));
+        assertThat(player.getName().getName()).isEqualTo("Lil_Ziu__Vert");
+        assertThat(player.getShardId()).isEqualTo(Shards.KAKAO);
         assertThat(player.getClanId()).isEqualTo("clan.96147d243bf044eda155a5e04fe91173");
 
-        List<String> matchIds = playerData.getMatchIds();
+        List<MatchId> matchIds = playerData.getMatchIds();
         assertThat(matchIds.size()).isEqualTo(2);
     }
 }

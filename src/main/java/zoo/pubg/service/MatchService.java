@@ -13,6 +13,7 @@ import zoo.pubg.service.dto.IncludedDto;
 import zoo.pubg.service.dto.MatchDataDto;
 import zoo.pubg.service.parser.MatchApiParser;
 import zoo.pubg.service.parser.deserialization.match.MatchInformation;
+import zoo.pubg.vo.MatchId;
 
 @Service
 @Transactional(readOnly = true)
@@ -30,17 +31,17 @@ public class MatchService {
     private PlayerMatchService playerMatchService;
 
     @Transactional
-    public void fetchMatchHistory(String shards, String matchId) throws JsonProcessingException {
+    public void fetchMatchHistory(String shards, MatchId matchId) throws JsonProcessingException {
         if (matchRepository.isExists(matchId)) {
             return;
         }
-        String response = pubgBasicApi.fetchPlayerMatch(shards, matchId);
+        String response = pubgBasicApi.fetchPlayerMatch(shards, matchId.getMatchId());
         DeserializedMatchDto deserializedMatchDto = deserialize(response);
         MatchDataDto matchDataDto = deserializedMatchDto.matchDataDto();
         IncludedDto includedDto = deserializedMatchDto.includedDto();
 
         Match match = new Match(
-                matchDataDto.matchId(), matchDataDto.mapName(),
+                matchId, matchDataDto.mapName(),
                 matchDataDto.gameMode(), matchDataDto.matchType(),
                 matchDataDto.shardId(), matchDataDto.duration(),
                 deserializedMatchDto.getTelemetryUrl(), matchDataDto.createdAt()

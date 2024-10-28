@@ -1,4 +1,6 @@
 package zoo.pubg.service.parser.deserialization.player;
 
-public record MatchData(String type, String id) {
+import zoo.pubg.vo.MatchId;
+
+public record MatchData(String type, MatchId id) {
 }

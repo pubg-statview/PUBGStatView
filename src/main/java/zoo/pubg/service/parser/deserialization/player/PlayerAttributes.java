@@ -1,4 +1,7 @@
 package zoo.pubg.service.parser.deserialization.player;
 
-public record PlayerAttributes(String shardId, String clanId, String name) {
+import zoo.pubg.constant.Shards;
+import zoo.pubg.vo.PlayerName;
+
+public record PlayerAttributes(Shards shardId, String clanId, PlayerName name) {
 }

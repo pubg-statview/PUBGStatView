@@ -8,13 +8,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Match;
 import zoo.pubg.repository.MatchRepository;
 import zoo.pubg.service.dto.ParticipantDto;
+import zoo.pubg.vo.MatchId;
+import zoo.pubg.vo.PlayerId;
+import zoo.pubg.vo.PlayerMatchId;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -40,7 +42,7 @@ class PlayerMatchServiceTest {
     );
 
     private final Match match = new Match(
-            "90cc5f77-5d9a-4473-88b4-e55659120632", "Baltic_Main",
+            new MatchId("90cc5f77-5d9a-4473-88b4-e55659120632"), "Baltic_Main",
             "squad", "competitive",
             Shards.KAKAO, 1916, "url", LocalDateTime.now()
     );
@@ -52,7 +54,6 @@ class PlayerMatchServiceTest {
 
     @Test
     @DisplayName("여러명의 id가 들어왔을 때, 이미 있는 id는 스킵하고 잘 처리하는 지 테스트")
-    @Commit
     void fetchTest() throws JsonProcessingException {
         repository.save(match);
         service.fetch(match, makeInput(ids));
@@ -63,6 +64,7 @@ class PlayerMatchServiceTest {
     }
 
     private static ParticipantDto makeDto(String id) {
-        return new ParticipantDto("idtest" + id, id, 0, 0, 0, 0, 0, 0, 0);
+        return new ParticipantDto(new PlayerMatchId("test" + id), new PlayerId(id),
+                0, 0, 0, 0, 0, 0, 0);
     }
 }

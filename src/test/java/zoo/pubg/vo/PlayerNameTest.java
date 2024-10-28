@@ -11,14 +11,23 @@ class PlayerNameTest {
 
     @ParameterizedTest
     @DisplayName("유효한 닉네임 테스트")
-    @ValueSource(strings = {"Lil_Ziu__Vert", "LILll--", "abcK-123"})
+    @ValueSource(strings = {"Lil_Ziu__Vert", "LILll--", "abcK-123", "account.a164c65de7bd46f3a0101d4b8ad4a626",
+            "ai.339"})
     void validNameTest(String name) {
         // when
         PlayerName playerName = new PlayerName(name);
 
         // then
-        assertThat(playerName.name()).isEqualTo(name);
+        assertThat(playerName.getName()).isEqualTo(name);
 
+        String input = "account.a164c65de7bd46f3a0101d4b8ad4a626";
+        String pattern = "^account\\.[a-f0-9]{32}$";
+
+        if (input.matches(pattern)) {
+            System.out.println("Pattern matches!");
+        } else {
+            System.out.println("Pattern does not match.");
+        }
     }
 
     @ParameterizedTest

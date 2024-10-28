@@ -7,7 +7,8 @@ public enum Shards {
     KAKAO("kakao"),
     PSN("psn"),
     STADIA("stadia"),
-    XBOX("xbox");
+    XBOX("xbox"),
+    kakao("kakao");
 
     private final String shardName;
 
