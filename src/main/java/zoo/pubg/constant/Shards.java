@@ -1,5 +1,7 @@
 package zoo.pubg.constant;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public enum Shards {
     STEAM("steam"),
     KAKAO("kakao"),
@@ -17,6 +19,7 @@ public enum Shards {
         return this.shardName;
     }
 
+    @JsonCreator
     public static Shards of(String shards) {
         try {
             return valueOf(shards.toUpperCase());
