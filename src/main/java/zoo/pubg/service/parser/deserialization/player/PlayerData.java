@@ -3,6 +3,7 @@ package zoo.pubg.service.parser.deserialization.player;
 import java.time.LocalDateTime;
 import java.util.List;
 import zoo.pubg.domain.Player;
+import zoo.pubg.vo.MatchId;
 
 public record PlayerData(
         String id, PlayerAttributes attributes, PlayerRelationships relationships
@@ -13,7 +14,7 @@ public record PlayerData(
         );
     }
 
-    public List<String> getMatchIds() {
+    public List<MatchId> getMatchIds() {
         return relationships.getMatchIds();
     }
 }

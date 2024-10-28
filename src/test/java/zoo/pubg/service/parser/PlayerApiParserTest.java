@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import zoo.pubg.domain.Player;
 import zoo.pubg.service.parser.deserialization.player.PlayerData;
 import zoo.pubg.service.parser.deserialization.player.PlayerDto;
+import zoo.pubg.vo.MatchId;
 
 class PlayerApiParserTest {
 
@@ -71,7 +72,7 @@ class PlayerApiParserTest {
         assertThat(player.getShardId()).isEqualTo("kakao");
         assertThat(player.getClanId()).isEqualTo("clan.96147d243bf044eda155a5e04fe91173");
 
-        List<String> matchIds = playerData.getMatchIds();
+        List<MatchId> matchIds = playerData.getMatchIds();
         assertThat(matchIds.size()).isEqualTo(2);
     }
 }

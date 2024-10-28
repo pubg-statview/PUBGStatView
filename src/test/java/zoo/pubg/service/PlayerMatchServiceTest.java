@@ -15,6 +15,7 @@ import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Match;
 import zoo.pubg.repository.MatchRepository;
 import zoo.pubg.service.dto.ParticipantDto;
+import zoo.pubg.vo.MatchId;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -40,7 +41,7 @@ class PlayerMatchServiceTest {
     );
 
     private final Match match = new Match(
-            "90cc5f77-5d9a-4473-88b4-e55659120632", "Baltic_Main",
+            new MatchId("90cc5f77-5d9a-4473-88b4-e55659120632"), "Baltic_Main",
             "squad", "competitive",
             Shards.KAKAO, 1916, "url", LocalDateTime.now()
     );
