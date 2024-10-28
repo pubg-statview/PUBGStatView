@@ -5,12 +5,13 @@ import lombok.Setter;
 import zoo.pubg.service.dto.ParticipantDto;
 import zoo.pubg.service.parser.deserialization.match.included.participant.HistoryAttributes;
 import zoo.pubg.service.parser.deserialization.match.included.participant.PlayerMatchStats;
+import zoo.pubg.vo.PlayerMatchId;
 
 @Getter
 @Setter
 public class Participant extends Included {
 
-    private String id;
+    private PlayerMatchId id;
     private HistoryAttributes attributes;
 
     public ParticipantDto toDto() {
