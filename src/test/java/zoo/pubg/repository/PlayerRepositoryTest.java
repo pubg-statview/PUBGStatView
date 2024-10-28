@@ -14,6 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Player;
+import zoo.pubg.vo.PlayerId;
 import zoo.pubg.vo.PlayerName;
 
 @ExtendWith(SpringExtension.class)
@@ -29,10 +30,9 @@ class PlayerRepositoryTest {
     @Test
     @DisplayName("플레이어 이름으로 엔티티 검색")
     void findByNameTest() {
-        String playerId = "12345678";
-
-        PlayerName name = new PlayerName("playerName");
         // given
+        PlayerId playerId = new PlayerId("12345678");
+        PlayerName name = new PlayerName("playerName");
         Player player = new Player(
                 playerId, name, shards, "clanId", LocalDateTime.now()
         );
@@ -51,9 +51,10 @@ class PlayerRepositoryTest {
             "12345678,true",
             "11111111,false"
     })
-    void findByIdTest(String playerId, boolean answer) {
+    void findByIdTest(String id, boolean answer) {
+        PlayerId playerId = new PlayerId(id);
         Player player = new Player(
-                "12345678", new PlayerName("name"), shards, "clanId", LocalDateTime.now()
+                new PlayerId("12345678"), new PlayerName("name"), shards, "clanId", LocalDateTime.now()
         );
         repository.save(player);
 
@@ -65,11 +66,13 @@ class PlayerRepositoryTest {
     void duplicatedNameSave() {
         // given
         Player playerWhoChangedName = new Player(
-                "account.aaa", new PlayerName("AAAAAA"), shards, "clanId.123", LocalDateTime.now()
+                new PlayerId("account.aaa"), new PlayerName("AAAAAA"),
+                shards, "clanId.123", LocalDateTime.now()
         );
         repository.save(playerWhoChangedName);
         Player player = new Player(
-                "account.bbb", new PlayerName("AAAAAA"), shards, "clanId.123", LocalDateTime.now()
+                new PlayerId("account.bbb"), new PlayerName("AAAAAA"),
+                shards, "clanId.123", LocalDateTime.now()
         );
 
         // when
@@ -89,11 +92,13 @@ class PlayerRepositoryTest {
     void alreadyExistsId() {
         // given
         Player originalPlayer = new Player(
-                "account.aaa", new PlayerName("AAAAAA"), shards, "clan.123", LocalDateTime.now()
+                new PlayerId("account.aaa"), new PlayerName("AAAAAA"),
+                shards, "clan.123", LocalDateTime.now()
         );
         repository.save(originalPlayer);
         Player player = new Player(
-                "account.aaa", new PlayerName("BBBBBB"), shards, "clan.123", LocalDateTime.now()
+                new PlayerId("account.aaa"), new PlayerName("BBBBBB"),
+                shards, "clan.123", LocalDateTime.now()
         );
 
         // when

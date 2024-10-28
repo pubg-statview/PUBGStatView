@@ -12,6 +12,7 @@ import zoo.pubg.service.dto.MatchDataDto;
 import zoo.pubg.service.dto.ParticipantDto;
 import zoo.pubg.service.dto.RosterDto;
 import zoo.pubg.service.parser.deserialization.match.MatchInformation;
+import zoo.pubg.vo.PlayerId;
 
 class MatchApiParserTest {
 
@@ -169,7 +170,7 @@ class MatchApiParserTest {
         ParticipantDto participantDtos = includedDto.participantDtos().get(0);
 
         assertThat(participantDtos.playerMatchId()).isEqualTo("b95daaf8-4f44-446f-95d7-2f2665291b7e");
-        assertThat(participantDtos.playerId()).isEqualTo("account.11242cc329fc4ca09a21a6f96b5337a4");
+        assertThat(participantDtos.playerId()).isEqualTo(new PlayerId("account.11242cc329fc4ca09a21a6f96b5337a4"));
         assertThat(participantDtos.dbno()).isEqualTo(0);
     }
 

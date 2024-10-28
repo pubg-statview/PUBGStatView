@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.constant.Shards;
+import zoo.pubg.vo.PlayerIds;
 import zoo.pubg.vo.PlayerName;
 
 @ExtendWith(SpringExtension.class)
@@ -45,6 +46,6 @@ class PlayerServiceTest {
         );
         Shards shards = Shards.KAKAO;
 
-        playerService.fetchPlayersByIds(shards, ids);
+        playerService.fetchPlayersByIds(shards, new PlayerIds(ids));
     }
 }

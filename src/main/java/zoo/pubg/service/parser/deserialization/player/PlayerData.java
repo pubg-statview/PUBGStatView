@@ -4,9 +4,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import zoo.pubg.domain.Player;
 import zoo.pubg.vo.MatchId;
+import zoo.pubg.vo.PlayerId;
 
 public record PlayerData(
-        String id, PlayerAttributes attributes, PlayerRelationships relationships
+        PlayerId id, PlayerAttributes attributes, PlayerRelationships relationships
 ) {
     public Player toEntity() {
         return new Player(

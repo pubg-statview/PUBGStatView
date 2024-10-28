@@ -5,6 +5,7 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import zoo.pubg.domain.Player;
+import zoo.pubg.vo.PlayerId;
 import zoo.pubg.vo.PlayerName;
 
 
@@ -18,11 +19,11 @@ public class PlayerRepository {
         return find(player.getPlayerId()) != null;
     }
 
-    public boolean isExistsId(String id) {
+    public boolean isExistsId(PlayerId id) {
         return find(id) != null;
     }
 
-    public Player find(String playerId) {
+    public Player find(PlayerId playerId) {
         return em.find(Player.class, playerId);
     }
 
@@ -46,7 +47,7 @@ public class PlayerRepository {
         try {
             Player found = findByName(player.getName());
             if (!found.getPlayerId().equals(player.getPlayerId())) {
-                PlayerName replacedName = new PlayerName(found.getPlayerId());
+                PlayerName replacedName = new PlayerName(found.getPlayerId().getPlayerId());
                 found.updateName(replacedName);
             }
         } catch (NoResultException ignored) {

@@ -15,6 +15,7 @@ import zoo.pubg.service.parser.PlayerApiParser;
 import zoo.pubg.service.parser.deserialization.player.PlayerData;
 import zoo.pubg.service.parser.deserialization.player.PlayerDto;
 import zoo.pubg.vo.MatchId;
+import zoo.pubg.vo.PlayerIds;
 import zoo.pubg.vo.PlayerName;
 
 @Service
@@ -42,14 +43,14 @@ public class PlayerService {
         return data.getMatchIds();
     }
 
-    public void fetchPlayersByIds(Shards shards, List<String> ids) throws JsonProcessingException {
+    public void fetchPlayersByIds(Shards shards, PlayerIds ids) throws JsonProcessingException {
         if (ids.isEmpty()) {
             return;
         }
         if (ids.size() > 10) {
             throw new IllegalArgumentException("10개 이하여야함 (API 제한)");
         }
-        String joinId = String.join(",", ids);
+        String joinId = ids.joinToString();
         String response = pubgBasicAPI.fetchPlayerStatsById(shards.getShardName(), joinId);
         PlayerDto playerDto = parser.parse(response);
         for (PlayerData data : playerDto.data()) {

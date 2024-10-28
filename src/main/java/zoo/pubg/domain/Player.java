@@ -1,14 +1,15 @@
 package zoo.pubg.domain;
 
 import jakarta.persistence.Embedded;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zoo.pubg.constant.Shards;
+import zoo.pubg.vo.PlayerId;
 import zoo.pubg.vo.PlayerName;
 
 @Entity
@@ -16,8 +17,8 @@ import zoo.pubg.vo.PlayerName;
 @NoArgsConstructor
 public class Player {
 
-    @Id
-    private String playerId;
+    @EmbeddedId
+    private PlayerId playerId;
 
     @Embedded
     private PlayerName name;
@@ -27,7 +28,7 @@ public class Player {
     private String clanId;
     private LocalDateTime lastUpdated;
 
-    public Player(String playerId, PlayerName name, Shards shardId, String clanId, LocalDateTime lastUpdated) {
+    public Player(PlayerId playerId, PlayerName name, Shards shardId, String clanId, LocalDateTime lastUpdated) {
         this.playerId = playerId;
         this.name = name;
         this.shardId = shardId;

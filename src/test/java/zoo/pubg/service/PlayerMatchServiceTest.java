@@ -15,6 +15,7 @@ import zoo.pubg.domain.Match;
 import zoo.pubg.repository.MatchRepository;
 import zoo.pubg.service.dto.ParticipantDto;
 import zoo.pubg.vo.MatchId;
+import zoo.pubg.vo.PlayerId;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -62,6 +63,6 @@ class PlayerMatchServiceTest {
     }
 
     private static ParticipantDto makeDto(String id) {
-        return new ParticipantDto("idtest" + id, id, 0, 0, 0, 0, 0, 0, 0);
+        return new ParticipantDto("idtest" + id, new PlayerId(id), 0, 0, 0, 0, 0, 0, 0);
     }
 }

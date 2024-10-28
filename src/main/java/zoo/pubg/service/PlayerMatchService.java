@@ -1,7 +1,6 @@
 package zoo.pubg.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +11,8 @@ import zoo.pubg.domain.PlayerMatchResult;
 import zoo.pubg.repository.PlayerMatchRepository;
 import zoo.pubg.repository.PlayerRepository;
 import zoo.pubg.service.dto.ParticipantDto;
+import zoo.pubg.vo.PlayerId;
+import zoo.pubg.vo.PlayerIds;
 
 @Service
 public class PlayerMatchService {
@@ -27,7 +28,7 @@ public class PlayerMatchService {
 
     public void fetch(Match match, List<ParticipantDto> participantDtos) throws JsonProcessingException {
         participantDtos = participantDtos.stream()
-                .filter(p -> p.playerId().split("\\.")[0].equals("account"))
+                .filter(p -> p.playerId().getPlayerId().split("\\.")[0].equals("account"))
                 .toList();  // 일반 봇 임시로 처리
         fetchUnregisterPlayer(match.getShardId(), participantDtos);
         participantDtos.forEach(dto -> fetch(match, dto));
@@ -46,9 +47,9 @@ public class PlayerMatchService {
 
     private void fetchUnregisterPlayer(Shards shards, List<ParticipantDto> participantDtos)
             throws JsonProcessingException {
-        List<String> unregisterIds = new ArrayList<>();
+        PlayerIds unregisterIds = new PlayerIds();
         for (ParticipantDto participantDto : participantDtos) {
-            String id = participantDto.playerId();
+            PlayerId id = participantDto.playerId();
             if (playerRepository.isExistsId(id)) {
                 continue;
             }
