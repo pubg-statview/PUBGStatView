@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Match;
 import zoo.pubg.repository.MatchRepository;
 import zoo.pubg.service.api.PubgBasicApi;
@@ -31,11 +32,11 @@ public class MatchService {
     private PlayerMatchService playerMatchService;
 
     @Transactional
-    public void fetchMatchHistory(String shards, MatchId matchId) throws JsonProcessingException {
+    public void fetchMatchHistory(Shards shards, MatchId matchId) throws JsonProcessingException {
         if (matchRepository.isExists(matchId)) {
             return;
         }
-        String response = pubgBasicApi.fetchPlayerMatch(shards, matchId.getMatchId());
+        String response = pubgBasicApi.fetchPlayerMatch(shards.getShardName(), matchId.getMatchId());
         DeserializedMatchDto deserializedMatchDto = deserialize(response);
         MatchDataDto matchDataDto = deserializedMatchDto.matchDataDto();
         IncludedDto includedDto = deserializedMatchDto.includedDto();
