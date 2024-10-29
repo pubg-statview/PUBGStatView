@@ -8,6 +8,7 @@ import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Match;
 import zoo.pubg.domain.Player;
 import zoo.pubg.domain.PlayerMatchResult;
+import zoo.pubg.domain.RosterMatchResult;
 import zoo.pubg.repository.PlayerMatchRepository;
 import zoo.pubg.repository.PlayerRepository;
 import zoo.pubg.service.dto.ParticipantDto;
@@ -37,7 +38,7 @@ public class PlayerMatchService {
     private void fetch(Match match, ParticipantDto participantDto) {
         Player player = playerRepository.find(participantDto.playerId());
         PlayerMatchResult playerMatchResult = new PlayerMatchResult(
-                participantDto.playerMatchId(), player, match,
+                participantDto.playerMatchId(), player, match, new RosterMatchResult(),
                 participantDto.dbno(), participantDto.damageDealt(),
                 participantDto.headshotKills(), participantDto.kills(), participantDto.assists(),
                 participantDto.longestKill(), participantDto.winPlace()
