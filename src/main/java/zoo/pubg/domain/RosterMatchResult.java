@@ -1,5 +1,6 @@
 package zoo.pubg.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -18,6 +19,7 @@ public class RosterMatchResult {
     @EmbeddedId
     private RosterId rosterId;
 
+    @Column(name = "`rank`")
     private Integer rank;
     private Integer teamId;
 
