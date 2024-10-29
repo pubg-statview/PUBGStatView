@@ -29,6 +29,9 @@ public class MatchService {
     private MatchRepository matchRepository;
 
     @Autowired
+    private RosterMatchService rosterMatchService;
+
+    @Autowired
     private PlayerMatchService playerMatchService;
 
     @Transactional

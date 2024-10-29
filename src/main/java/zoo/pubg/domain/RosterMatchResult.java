@@ -4,9 +4,15 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import zoo.pubg.vo.RosterId;
 
 @Entity
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class RosterMatchResult {
 
     @EmbeddedId
