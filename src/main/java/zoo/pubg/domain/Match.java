@@ -28,7 +28,7 @@ public class Match {
 
     @Enumerated(EnumType.STRING)
     private Shards shardId;
-    private int duration;
+    private Integer duration;
     private String telemetryURL;
     private LocalDateTime createdAt;
 }
