@@ -51,7 +51,8 @@ public class MatchService {
                 deserializedMatchDto.getTelemetryUrl(), matchDataDto.createdAt()
         );
         matchRepository.save(match);
-        playerMatchService.fetch(match, includedDto.participantDtos());
+        PlayerRosterMap playerRosterMap = rosterMatchService.fetch(match, includedDto.rosterDtos());
+        playerMatchService.fetch(match, includedDto.participantDtos(), playerRosterMap);
     }
 
     private DeserializedMatchDto deserialize(String response) throws JsonProcessingException {

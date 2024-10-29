@@ -27,18 +27,20 @@ public class PlayerMatchService {
     @Autowired
     private PlayerService playerService;
 
-    public void fetch(Match match, List<ParticipantDto> participantDtos) throws JsonProcessingException {
+    public void fetch(Match match, List<ParticipantDto> participantDtos, PlayerRosterMap playerRosterMap)
+            throws JsonProcessingException {
         participantDtos = participantDtos.stream()
                 .filter(p -> p.playerId().getPlayerId().split("\\.")[0].equals("account"))
                 .toList();  // 일반 봇 임시로 처리
         fetchUnregisterPlayer(match.getShardId(), participantDtos);
-        participantDtos.forEach(dto -> fetch(match, dto));
+        participantDtos.forEach(dto -> fetch(match, dto, playerRosterMap));
     }
 
-    private void fetch(Match match, ParticipantDto participantDto) {
+    private void fetch(Match match, ParticipantDto participantDto, PlayerRosterMap playerRosterMap) {
         Player player = playerRepository.find(participantDto.playerId());
+        RosterMatchResult rosterMatchResult = playerRosterMap.get(participantDto.playerMatchId());
         PlayerMatchResult playerMatchResult = new PlayerMatchResult(
-                participantDto.playerMatchId(), player, match, new RosterMatchResult(),
+                participantDto.playerMatchId(), player, match, rosterMatchResult,
                 participantDto.dbno(), participantDto.damageDealt(),
                 participantDto.headshotKills(), participantDto.kills(), participantDto.assists(),
                 participantDto.longestKill(), participantDto.winPlace()
