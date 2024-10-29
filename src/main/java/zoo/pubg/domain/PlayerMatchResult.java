@@ -18,7 +18,7 @@ import zoo.pubg.vo.PlayerMatchId;
 public class PlayerMatchResult {
 
     @EmbeddedId
-    @AttributeOverride(name = "playerMatchId", column = @Column(name = "playerMatchResultId"))
+    @AttributeOverride(name = "playerMatchIds", column = @Column(name = "playerMatchResultId"))
     private PlayerMatchId playerMatchResultId;
 
     @ManyToOne

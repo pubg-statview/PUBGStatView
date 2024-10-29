@@ -6,12 +6,13 @@ import zoo.pubg.service.dto.RosterDto;
 import zoo.pubg.service.parser.deserialization.match.included.roster.RosterAttributes;
 import zoo.pubg.service.parser.deserialization.match.included.roster.RosterRelationships;
 import zoo.pubg.service.parser.deserialization.match.included.roster.attributes.RosterMatchStats;
+import zoo.pubg.vo.RosterId;
 
 @Getter
 @Setter
 public class Roster extends Included {
 
-    private String id;
+    private RosterId id;
     private RosterAttributes attributes;
     private RosterRelationships relationships;
 

@@ -1,5 +1,7 @@
 package zoo.pubg.service.parser.deserialization.match.included.roster.relationships.participants;
 
-public record RosterParticipantData(String id) {
+import zoo.pubg.vo.PlayerMatchId;
+
+public record RosterParticipantData(PlayerMatchId id) {
 
 }
