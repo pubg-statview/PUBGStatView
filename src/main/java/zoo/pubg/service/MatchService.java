@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Match;
+import zoo.pubg.dto.MatchIdsDto;
 import zoo.pubg.repository.MatchRepository;
 import zoo.pubg.service.api.PubgBasicApi;
 import zoo.pubg.service.dto.DeserializedMatchDto;
@@ -17,7 +18,7 @@ import zoo.pubg.service.parser.deserialization.match.MatchInformation;
 import zoo.pubg.vo.MatchId;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class MatchService {
 
@@ -34,7 +35,18 @@ public class MatchService {
     @Autowired
     private PlayerMatchService playerMatchService;
 
-    @Transactional
+    public void fetchMatches(MatchIdsDto matchIdsDto) {
+        Shards shards = matchIdsDto.shards();
+        matchIdsDto.matchIds()
+                .forEach(matchId -> {
+                    try {
+                        fetchMatchHistory(shards, matchId);
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
+                });
+    }
+
     public void fetchMatchHistory(Shards shards, MatchId matchId) throws JsonProcessingException {
         if (matchRepository.isExists(matchId)) {
             return;
