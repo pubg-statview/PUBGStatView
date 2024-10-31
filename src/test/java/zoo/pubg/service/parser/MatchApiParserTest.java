@@ -94,6 +94,39 @@ class MatchApiParserTest {
                                     }
                                 },
                                 {
+                                    "type": "participant",
+                                    "id": "b95daaf8-4f44-446f-95d7-2f2665291b7e",
+                                    "attributes": {
+                                        "stats": {
+                                            "DBNOs": 0,
+                                            "assists": 1,
+                                            "boosts": 2,
+                                            "damageDealt": 48.6,
+                                            "deathType": "byplayer",
+                                            "headshotKills": 0,
+                                            "heals": 0,
+                                            "killPlace": 75,
+                                            "killStreaks": 0,
+                                            "kills": 0,
+                                            "longestKill": 0,
+                                            "name": "",
+                                            "playerId": "account.11242cc329fc4ca09a21a6f96b5337a4",
+                                            "revives": 0,
+                                            "rideDistance": 0,
+                                            "roadKills": 0,
+                                            "swimDistance": 0,
+                                            "teamKills": 0,
+                                            "timeSurvived": 389,
+                                            "vehicleDestroys": 0,
+                                            "walkDistance": 267.28897,
+                                            "weaponsAcquired": 3,
+                                            "winPlace": 21
+                                        },
+                                        "actor": "",
+                                        "shardId": "kakao"
+                                    }
+                                },
+                                {
                                     "type": "roster",
                                     "id": "b180098c-7842-4aa1-8d0d-323d73216a54",
                                     "attributes": {

@@ -4,11 +4,13 @@ import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Embeddable
 @NoArgsConstructor
 @Getter
 @EqualsAndHashCode
+@ToString
 public final class PlayerName {
 
     private final static int MINIMUM_LENGTH = 4;
