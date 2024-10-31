@@ -33,7 +33,7 @@ public class PlayerMatchService {
         participantDtos = participantDtos.stream()
                 .filter(p -> p.playerId().getPlayerId().split("\\.")[0].equals("account"))
                 .toList();  // 일반 봇 임시로 처리
-        fetchUnregisterPlayer(match.getShardId(), participantDtos);
+        saveUnregisterPlayer(match.getShardId(), participantDtos);
         participantDtos.forEach(dto -> fetch(match, dto, playerRosterMap));
     }
 
