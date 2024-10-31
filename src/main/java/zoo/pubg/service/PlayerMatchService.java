@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import zoo.pubg.constant.PlayerType;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Match;
 import zoo.pubg.domain.Player;
@@ -56,7 +57,7 @@ public class PlayerMatchService {
                 continue;
             }
             Player player = new Player(
-                    id, participantDto.playerName(), shards, "", LocalDateTime.now()
+                    id, participantDto.playerName(), shards, "", PlayerType.ETC, LocalDateTime.now()
             );
             playerRepository.save(player);
         }

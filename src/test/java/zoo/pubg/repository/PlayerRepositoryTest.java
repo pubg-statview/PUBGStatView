@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
+import zoo.pubg.constant.PlayerType;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Player;
 import zoo.pubg.vo.PlayerId;
@@ -34,7 +35,7 @@ class PlayerRepositoryTest {
         PlayerId playerId = new PlayerId("12345678");
         PlayerName name = new PlayerName("playerName");
         Player player = new Player(
-                playerId, name, shards, "clanId", LocalDateTime.now()
+                playerId, name, shards, "clanId", PlayerType.ETC, LocalDateTime.now()
         );
         repository.save(player);
 
@@ -54,7 +55,7 @@ class PlayerRepositoryTest {
     void findByIdTest(String id, boolean answer) {
         PlayerId playerId = new PlayerId(id);
         Player player = new Player(
-                new PlayerId("12345678"), new PlayerName("name"), shards, "clanId", LocalDateTime.now()
+                new PlayerId("12345678"), new PlayerName("name"), shards, "clanId", PlayerType.ETC, LocalDateTime.now()
         );
         repository.save(player);
 
@@ -67,12 +68,12 @@ class PlayerRepositoryTest {
         // given
         Player playerWhoChangedName = new Player(
                 new PlayerId("account.aaa"), new PlayerName("AAAAAA"),
-                shards, "clanId.123", LocalDateTime.now()
+                shards, "clanId.123", PlayerType.ETC, LocalDateTime.now()
         );
         repository.save(playerWhoChangedName);
         Player player = new Player(
                 new PlayerId("account.bbb"), new PlayerName("AAAAAA"),
-                shards, "clanId.123", LocalDateTime.now()
+                shards, "clanId.123", PlayerType.ETC, LocalDateTime.now()
         );
 
         // when
@@ -93,12 +94,12 @@ class PlayerRepositoryTest {
         // given
         Player originalPlayer = new Player(
                 new PlayerId("account.aaa"), new PlayerName("AAAAAA"),
-                shards, "clan.123", LocalDateTime.now()
+                shards, "clan.123", PlayerType.ETC, LocalDateTime.now()
         );
         repository.save(originalPlayer);
         Player player = new Player(
                 new PlayerId("account.aaa"), new PlayerName("BBBBBB"),
-                shards, "clan.123", LocalDateTime.now()
+                shards, "clan.123", PlayerType.ETC, LocalDateTime.now()
         );
 
         // when
