@@ -57,7 +57,8 @@ public class PlayerMatchService {
                 continue;
             }
             Player player = new Player(
-                    id, participantDto.playerName(), shards, "", PlayerType.ETC, LocalDateTime.now()
+                    id, participantDto.playerName(), shards, "", PlayerType.from(id),
+                    LocalDateTime.now()
             );
             playerRepository.save(player);
         }

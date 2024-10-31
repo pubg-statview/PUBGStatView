@@ -12,7 +12,8 @@ public record PlayerData(
 ) {
     public Player toEntity() {
         return new Player(
-                id, attributes.name(), attributes.shardId(), attributes.clanId(), PlayerType.ETC, LocalDateTime.now()
+                id, attributes.name(), attributes.shardId(), attributes.clanId(), PlayerType.from(id),
+                LocalDateTime.now()
         );
     }
 
