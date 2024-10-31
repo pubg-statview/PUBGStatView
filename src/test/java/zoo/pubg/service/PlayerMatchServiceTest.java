@@ -18,6 +18,7 @@ import zoo.pubg.service.dto.ParticipantDto;
 import zoo.pubg.vo.MatchId;
 import zoo.pubg.vo.PlayerId;
 import zoo.pubg.vo.PlayerMatchId;
+import zoo.pubg.vo.PlayerName;
 import zoo.pubg.vo.RosterId;
 
 @ExtendWith(SpringExtension.class)
@@ -66,7 +67,7 @@ class PlayerMatchServiceTest {
     }
 
     private static ParticipantDto makeDto(String id) {
-        return new ParticipantDto(new PlayerMatchId("test" + id), new PlayerId(id),
+        return new ParticipantDto(new PlayerMatchId("test" + id), new PlayerId(id), new PlayerName(id),
                 0, 0, 0, 0, 0, 0, 0);
     }
 

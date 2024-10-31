@@ -1,6 +1,7 @@
 package zoo.pubg.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,19 @@ public class PlayerMatchService {
                 participantDto.longestKill(), participantDto.winPlace()
         );
         playerMatchRepository.save(playerMatchResult);
+    }
+
+    private void saveUnregisterPlayer(Shards shards, List<ParticipantDto> participantDtos) {
+        for (ParticipantDto participantDto : participantDtos) {
+            PlayerId id = participantDto.playerId();
+            if (playerRepository.isExistsId(id)) {
+                continue;
+            }
+            Player player = new Player(
+                    id, participantDto.playerName(), shards, "", LocalDateTime.now()
+            );
+            playerRepository.save(player);
+        }
     }
 
     private void fetchUnregisterPlayer(Shards shards, List<ParticipantDto> participantDtos)
