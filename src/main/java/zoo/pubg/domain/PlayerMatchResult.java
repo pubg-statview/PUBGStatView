@@ -29,6 +29,10 @@ public class PlayerMatchResult {
     @JoinColumn(name = "matchId", referencedColumnName = "matchId")
     private Match match;
 
+    @ManyToOne
+    @JoinColumn(name = "rosterId", referencedColumnName = "rosterId")
+    private RosterMatchResult rosterMatchResult;
+
     private Integer dbno;
     private Float damageDealt;
     private Integer headshotKills;

@@ -6,8 +6,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import zoo.pubg.constant.PlayerType;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.vo.PlayerId;
 import zoo.pubg.vo.PlayerName;
@@ -15,6 +17,7 @@ import zoo.pubg.vo.PlayerName;
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Player {
 
     @EmbeddedId
@@ -26,15 +29,11 @@ public class Player {
     @Enumerated(EnumType.STRING)
     private Shards shardId;
     private String clanId;
-    private LocalDateTime lastUpdated;
 
-    public Player(PlayerId playerId, PlayerName name, Shards shardId, String clanId, LocalDateTime lastUpdated) {
-        this.playerId = playerId;
-        this.name = name;
-        this.shardId = shardId;
-        this.clanId = clanId;
-        this.lastUpdated = lastUpdated;
-    }
+    @Enumerated(EnumType.STRING)
+    private PlayerType playerType;
+
+    private LocalDateTime lastUpdated;
 
     public void updateName(PlayerName newName) {
         this.name = newName;

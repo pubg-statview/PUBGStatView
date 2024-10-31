@@ -12,11 +12,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Match;
+import zoo.pubg.domain.RosterMatchResult;
 import zoo.pubg.repository.MatchRepository;
 import zoo.pubg.service.dto.ParticipantDto;
 import zoo.pubg.vo.MatchId;
 import zoo.pubg.vo.PlayerId;
 import zoo.pubg.vo.PlayerMatchId;
+import zoo.pubg.vo.PlayerName;
+import zoo.pubg.vo.RosterId;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -56,7 +59,7 @@ class PlayerMatchServiceTest {
     @DisplayName("여러명의 id가 들어왔을 때, 이미 있는 id는 스킵하고 잘 처리하는 지 테스트")
     void fetchTest() throws JsonProcessingException {
         repository.save(match);
-        service.fetch(match, makeInput(ids));
+        service.fetch(match, makeInput(ids), makeMap());
     }
 
     private static List<ParticipantDto> makeInput(List<String> ids) {
@@ -64,7 +67,14 @@ class PlayerMatchServiceTest {
     }
 
     private static ParticipantDto makeDto(String id) {
-        return new ParticipantDto(new PlayerMatchId("test" + id), new PlayerId(id),
+        return new ParticipantDto(new PlayerMatchId("test" + id), new PlayerId(id), new PlayerName(id),
                 0, 0, 0, 0, 0, 0, 0);
+    }
+
+    private PlayerRosterMap makeMap() {
+        PlayerRosterMap map = new PlayerRosterMap();
+        ids.forEach(id -> map.put(new PlayerMatchId("test" + id),
+                new RosterMatchResult(new RosterId("roster" + id), 0, 0, match)));
+        return map;
     }
 }

@@ -1,20 +1,27 @@
 package zoo.pubg.domain;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import zoo.pubg.vo.PlayerMatchId;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import zoo.pubg.vo.RosterId;
 
 @Entity
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class RosterMatchResult {
 
-    @Id
-    private String rosterId;
+    @EmbeddedId
+    private RosterId rosterId;
 
+    @Column(name = "`rank`")
     private Integer rank;
     private Integer teamId;
-    private PlayerMatchId playerMatchId;
 
     @ManyToOne
     @JoinColumn(name = "matchId", referencedColumnName = "matchId")

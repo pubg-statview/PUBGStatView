@@ -14,6 +14,7 @@ import zoo.pubg.service.dto.RosterDto;
 import zoo.pubg.service.parser.deserialization.match.MatchInformation;
 import zoo.pubg.vo.PlayerId;
 import zoo.pubg.vo.PlayerMatchId;
+import zoo.pubg.vo.RosterId;
 
 class MatchApiParserTest {
 
@@ -183,9 +184,10 @@ class MatchApiParserTest {
         IncludedDto includedDto = matchDto.includedDto();
         RosterDto rosterDto = includedDto.rosterDtos().get(0);
 
-        assertThat(rosterDto.rosterId()).isEqualTo("b180098c-7842-4aa1-8d0d-323d73216a54");
+        assertThat(rosterDto.rosterId()).isEqualTo(new RosterId("b180098c-7842-4aa1-8d0d-323d73216a54"));
         assertThat(rosterDto.rank()).isEqualTo(14);
-        assertThat(rosterDto.playerMatchId().get(0)).isEqualTo("81af3159-43c3-4130-a64f-3c44ad76ce92");
+        assertThat(rosterDto.playerMatchIds().get(0)).isEqualTo(
+                new PlayerMatchId("81af3159-43c3-4130-a64f-3c44ad76ce92"));
     }
 
     @Test

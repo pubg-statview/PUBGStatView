@@ -17,7 +17,7 @@ public class Participant extends Included {
     public ParticipantDto toDto() {
         PlayerMatchStats stats = attributes.stats();
         return new ParticipantDto(
-                id, stats.playerId(),
+                id, stats.playerId(), stats.name(),
                 stats.dbno(), stats.assists(), stats.kills(), stats.headshotKills(),
                 stats.damageDealt(), stats.longestKill(), stats.winPlace()
         );
