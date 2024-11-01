@@ -12,6 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.exception.NotFoundException;
+import zoo.pubg.exception.TooManyRequestsException;
 import zoo.pubg.vo.PlayerIds;
 import zoo.pubg.vo.PlayerName;
 
@@ -42,6 +43,23 @@ class PlayerServiceTest {
                 NotFoundException.class,
                 () -> playerService.fetchPlayer(shards, playerName)
         ).printStackTrace();
+    }
+
+    @Test
+    @DisplayName("너무 많은 요청이 들어왔을 때")
+    void fetchManyPlayerTest() throws JsonProcessingException {
+        PlayerName playerName = new PlayerName("Lil_Ziu__Vert");
+        Shards shards = Shards.KAKAO;
+        int times = 20;
+
+        Assertions.assertThrows(
+                TooManyRequestsException.class,
+                () -> {
+                    for (int i = 0; i < times; i++) {
+                        playerService.fetchPlayer(shards, playerName);
+                    }
+                }
+        );
     }
 
     @Test
