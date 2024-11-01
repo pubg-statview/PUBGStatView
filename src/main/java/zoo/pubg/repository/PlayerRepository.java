@@ -28,10 +28,14 @@ public class PlayerRepository {
     }
 
     public Player findByName(PlayerName name) {
-        return em.createQuery("select p from Player p " +
-                        "where p.name = :name", Player.class)
-                .setParameter("name", name)
-                .getSingleResult();
+        try {
+            return em.createQuery("select p from Player p " +
+                            "where p.name = :name", Player.class)
+                    .setParameter("name", name)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     public void save(Player player) {
@@ -44,15 +48,14 @@ public class PlayerRepository {
     }
 
     private void valid(Player player) {
-        try {
-            Player found = findByName(player.getName());
-            if (!found.getPlayerId().equals(player.getPlayerId())) {
-                PlayerName replacedName = new PlayerName(found.getPlayerId().getPlayerId());
-                found.updateName(replacedName);
-                em.flush();
-            }
-        } catch (NoResultException ignored) {
-
+        Player found = findByName(player.getName());
+        if (found == null) {
+            return;
+        }
+        if (!found.getPlayerId().equals(player.getPlayerId())) {
+            PlayerName replacedName = new PlayerName(found.getPlayerId().getPlayerId());
+            found.updateName(replacedName);
+            em.flush();
         }
     }
 }
