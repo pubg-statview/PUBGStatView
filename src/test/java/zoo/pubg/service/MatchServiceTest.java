@@ -2,6 +2,7 @@ package zoo.pubg.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.List;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,11 +13,15 @@ import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.dto.MatchIdsDto;
 import zoo.pubg.vo.MatchId;
+import zoo.pubg.vo.PlayerName;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional
 class MatchServiceTest {
+
+    @Autowired
+    private PlayerService playerService;
 
     @Autowired
     private MatchService matchService;
@@ -47,6 +52,21 @@ class MatchServiceTest {
 
         // when
         matchService.fetchMatches(dto);
+
+    }
+
+    @Test
+    @DisplayName("전체 동작 Test")
+    @Disabled
+    void fetchPlayerAndMatches() throws JsonProcessingException {
+        // given
+        PlayerName playerName = new PlayerName("Lil_Ziu__Vert");
+        Shards shards = Shards.KAKAO;
+
+        MatchIdsDto matchIdsDto = playerService.fetchPlayer(shards, playerName);
+
+        // when
+        matchService.fetchMatches(matchIdsDto);
 
     }
 }

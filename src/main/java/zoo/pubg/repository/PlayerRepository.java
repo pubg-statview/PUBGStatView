@@ -49,6 +49,7 @@ public class PlayerRepository {
             if (!found.getPlayerId().equals(player.getPlayerId())) {
                 PlayerName replacedName = new PlayerName(found.getPlayerId().getPlayerId());
                 found.updateName(replacedName);
+                em.flush();
             }
         } catch (NoResultException ignored) {
 
