@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Player;
 import zoo.pubg.dto.MatchIdsDto;
+import zoo.pubg.dto.PlayerMatchIdsDto;
 import zoo.pubg.repository.PlayerRepository;
 import zoo.pubg.service.api.PubgBasicApi;
 import zoo.pubg.service.parser.PlayerApiParser;
@@ -34,12 +35,15 @@ public class PlayerService {
         return playerRepository.findByName(name);
     }
 
-    public MatchIdsDto fetchPlayer(Shards shards, PlayerName name) throws JsonProcessingException {
+    public PlayerMatchIdsDto fetchPlayer(Shards shards, PlayerName name) throws JsonProcessingException {
         String responseString = pubgBasicAPI.fetchPlayerStatsByName(shards.getShardName(), name.getName());
         PlayerDto playerDto = parser.parse(responseString);
         PlayerData data = playerDto.getFirstPlayer();
-        playerRepository.save(data.toEntity());
-        return new MatchIdsDto(shards, data.getMatchIds());
+        Player player = data.toEntity();
+        playerRepository.save(player);
+        return new PlayerMatchIdsDto(
+                player, new MatchIdsDto(shards, data.getMatchIds())
+        );
     }
 
     public void fetchPlayersByIds(Shards shards, PlayerIds ids) throws JsonProcessingException {
