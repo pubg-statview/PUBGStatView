@@ -12,6 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.dto.MatchIdsDto;
+import zoo.pubg.dto.PlayerMatchIdsDto;
 import zoo.pubg.vo.MatchId;
 import zoo.pubg.vo.PlayerName;
 
@@ -63,10 +64,10 @@ class MatchServiceTest {
         PlayerName playerName = new PlayerName("Lil_Ziu__Vert");
         Shards shards = Shards.KAKAO;
 
-        MatchIdsDto matchIdsDto = playerService.fetchPlayer(shards, playerName);
+        PlayerMatchIdsDto playerMatchIdsDto = playerService.fetchPlayer(shards, playerName);
 
         // when
-        matchService.fetchMatches(matchIdsDto);
+        matchService.fetchMatches(playerMatchIdsDto.matchIdsDto());
 
     }
 }
