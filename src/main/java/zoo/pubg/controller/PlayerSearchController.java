@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Player;
 import zoo.pubg.dto.PlayerMatchIdsDto;
+import zoo.pubg.exception.NotFoundException;
+import zoo.pubg.exception.TooManyRequestsException;
 import zoo.pubg.service.MatchService;
 import zoo.pubg.service.PlayerService;
 import zoo.pubg.vo.PlayerName;
@@ -32,7 +34,7 @@ public class PlayerSearchController {
         if (player == null) {
             try {
                 return ResponseEntity.ok(fetchHelper(shards, playerName));
-            } catch (JsonProcessingException e) {
+            } catch (JsonProcessingException | TooManyRequestsException | NotFoundException e) {
                 return ResponseEntity.notFound().build();
             }
         }
@@ -45,7 +47,7 @@ public class PlayerSearchController {
             @PathVariable PlayerName playerName) {
         try {
             return ResponseEntity.ok(fetchHelper(shards, playerName));
-        } catch (JsonProcessingException e) {
+        } catch (JsonProcessingException | TooManyRequestsException | NotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
