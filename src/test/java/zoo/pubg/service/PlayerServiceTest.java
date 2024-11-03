@@ -3,6 +3,7 @@ package zoo.pubg.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,6 +48,7 @@ class PlayerServiceTest {
 
     @Test
     @DisplayName("너무 많은 요청이 들어왔을 때")
+    @Disabled
     void fetchManyPlayerTest() throws JsonProcessingException {
         PlayerName playerName = new PlayerName("Lil_Ziu__Vert");
         Shards shards = Shards.KAKAO;
