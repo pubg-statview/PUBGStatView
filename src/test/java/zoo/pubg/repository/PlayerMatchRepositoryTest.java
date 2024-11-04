@@ -1,6 +1,9 @@
 package zoo.pubg.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import jakarta.persistence.EntityManager;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,12 +19,11 @@ import zoo.pubg.domain.Match;
 import zoo.pubg.domain.Player;
 import zoo.pubg.domain.PlayerMatchResult;
 import zoo.pubg.domain.RosterMatchResult;
-import zoo.pubg.vo.*;
-
-import java.time.LocalDateTime;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import zoo.pubg.vo.MatchId;
+import zoo.pubg.vo.PlayerId;
+import zoo.pubg.vo.PlayerMatchId;
+import zoo.pubg.vo.PlayerName;
+import zoo.pubg.vo.RosterId;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
