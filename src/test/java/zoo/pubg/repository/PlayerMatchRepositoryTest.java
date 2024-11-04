@@ -88,7 +88,7 @@ class PlayerMatchRepositoryTest {
         assertThat(resultPage.getTotalElements()).isEqualTo(15);
         assertThat(resultPage.getTotalPages()).isEqualTo(3);
         assertThat(resultPage.getContent()).allMatch(
-                result -> result.getPlayer().getPlayerId().equals(testPlayer.getPlayerId())
+                result -> result.getPlayerId().equals(testPlayer.getPlayerId())
         );
     }
 
