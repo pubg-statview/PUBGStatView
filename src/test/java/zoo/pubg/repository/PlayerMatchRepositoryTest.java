@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import jakarta.persistence.EntityManager;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +74,8 @@ class PlayerMatchRepositoryTest {
     }
 
     @Test
-    void test() {
+    @DisplayName("Match 페이지네이션 테스트")
+    void matchPagenationTest() {
         // given
         int page = 0;
         int size = 5;
@@ -87,5 +90,22 @@ class PlayerMatchRepositoryTest {
         assertThat(resultPage.getContent()).allMatch(
                 result -> result.getPlayer().getPlayerId().equals(testPlayer.getPlayerId())
         );
+    }
+
+    @Test
+    @DisplayName("Match에 해당하는 모든 플레이어 데이터 불러오기")
+    void findAllParticipantsTest() {
+        // given
+        Match match = new Match(
+                new MatchId("testMatch" + 1),
+                "testMap", "testGameMode", "testGameMatchType",
+                Shards.KAKAO, 0, "testTelemetry", LocalDateTime.now()
+        );
+
+        // when
+        List<PlayerMatchResult> allParticipants = playerMatchRepository.findAllParticipants(match);
+
+        // then
+        assertThat(allParticipants.size()).isEqualTo(1);
     }
 }
