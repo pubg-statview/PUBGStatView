@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zoo.pubg.vo.PlayerId;
 import zoo.pubg.vo.PlayerMatchId;
+import zoo.pubg.vo.RosterId;
 
 @Entity
 @Getter
@@ -44,5 +45,9 @@ public class PlayerMatchResult {
 
     public PlayerId getPlayerId() {
         return player.getPlayerId();
+    }
+
+    public RosterId getRosterId() {
+        return rosterMatchResult.getRosterId();
     }
 }
