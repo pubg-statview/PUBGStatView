@@ -1,23 +1,20 @@
 package zoo.pubg.constant;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import lombok.Getter;
 
+@Getter
 public enum Shards {
     STEAM("steam"),
     KAKAO("kakao"),
     PSN("psn"),
     STADIA("stadia"),
-    XBOX("xbox"),
-    kakao("kakao");
+    XBOX("xbox");
 
     private final String shardName;
 
     Shards(String shardName) {
         this.shardName = shardName;
-    }
-
-    public String getShardName() {
-        return this.shardName;
     }
 
     @JsonCreator
