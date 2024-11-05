@@ -5,10 +5,8 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zoo.pubg.constant.PlayerType;
@@ -19,6 +17,7 @@ import zoo.pubg.vo.PlayerName;
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Player {
 
     @EmbeddedId
@@ -35,19 +34,6 @@ public class Player {
     private PlayerType playerType;
 
     private LocalDateTime lastUpdated;
-
-    @OneToMany(mappedBy = "player")
-    private final List<PlayerMatchResult> playerMatchResults = new ArrayList<>();
-
-    public Player(PlayerId playerId, PlayerName name, Shards shardId, String clanId, PlayerType playerType,
-                  LocalDateTime lastUpdated) {
-        this.playerId = playerId;
-        this.name = name;
-        this.shardId = shardId;
-        this.clanId = clanId;
-        this.playerType = playerType;
-        this.lastUpdated = lastUpdated;
-    }
 
     public void updateName(PlayerName newName) {
         this.name = newName;
