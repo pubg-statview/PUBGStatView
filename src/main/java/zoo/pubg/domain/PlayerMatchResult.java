@@ -9,7 +9,9 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import zoo.pubg.vo.PlayerId;
 import zoo.pubg.vo.PlayerMatchId;
+import zoo.pubg.vo.RosterId;
 
 @Entity
 @Getter
@@ -40,4 +42,12 @@ public class PlayerMatchResult {
     private Integer assists;
     private Float longestKill;
     private Integer winPlace;
+
+    public PlayerId getPlayerId() {
+        return player.getPlayerId();
+    }
+
+    public RosterId getRosterId() {
+        return rosterMatchResult.getRosterId();
+    }
 }

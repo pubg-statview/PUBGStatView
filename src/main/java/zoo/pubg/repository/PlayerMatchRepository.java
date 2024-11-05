@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import zoo.pubg.domain.Match;
 import zoo.pubg.domain.Player;
 import zoo.pubg.domain.PlayerMatchResult;
 
@@ -19,6 +20,13 @@ public class PlayerMatchRepository {
 
     public void save(PlayerMatchResult playerMatchResult) {
         em.persist(playerMatchResult);
+    }
+
+    public List<PlayerMatchResult> findAllParticipants(Match match) {
+        return em.createQuery(
+                        "SELECT pm FROM PlayerMatchResult pm WHERE pm.match = :match", PlayerMatchResult.class
+                ).setParameter("match", match)
+                .getResultList();
     }
 
     public Page<PlayerMatchResult> findAllWithPagination(Player player, int page, int size) {
