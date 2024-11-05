@@ -1,10 +1,8 @@
 package zoo.pubg.dto;
 
 import java.time.LocalDateTime;
-import lombok.Getter;
 import zoo.pubg.domain.Match;
 
-@Getter
 public record MatchDto(String mapName, String gameMode, String matchType, Integer duration, LocalDateTime createdAt) {
 
     public static MatchDto from(Match match) {

@@ -1,11 +1,9 @@
 package zoo.pubg.dto;
 
-import lombok.Getter;
 import zoo.pubg.domain.PlayerMatchResult;
 import zoo.pubg.service.RosterPlayerMap;
 import zoo.pubg.vo.RosterId;
 
-@Getter
 public record PlayerMatchResultDto(MatchDto matchDto, PlayerResultDto playerResultDto, RosterId rosterId,
                                    RosterPlayerMap rosterPlayerMap) {
 
