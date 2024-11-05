@@ -3,6 +3,7 @@ package zoo.pubg.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.constant.PlayerType;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Player;
+import zoo.pubg.domain.PlayerMatchResult;
 import zoo.pubg.vo.PlayerId;
 import zoo.pubg.vo.PlayerName;
 
@@ -108,5 +110,17 @@ class PlayerRepositoryTest {
 
         // then
         assertThat(result.getName()).isEqualTo(player.getName());
+    }
+
+    @Test
+    @DisplayName("PlayerMatchResult가 잘 맵핑 되는 지 테스트")
+    void mappingTest() {
+        PlayerId playerId1 = new PlayerId("account.a164c65de7bd46f3a0101d4b8ad4a626");
+        Player player1 = repository.find(playerId1);
+        List<PlayerMatchResult> playerMatchResults1 = player1.getPlayerMatchResults();
+
+        assertThat(playerMatchResults1).allMatch(
+                result -> result.getPlayerId().equals(playerId1)
+        );
     }
 }
