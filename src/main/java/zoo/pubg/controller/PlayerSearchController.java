@@ -28,12 +28,13 @@ public class PlayerSearchController {
 
     @GetMapping("/shards/{shards}/player/{playerName}")
     public ResponseEntity<Player> searchPlayer(
-            @PathVariable Shards shards,
+            @PathVariable String shards,
             @PathVariable PlayerName playerName) {
+        Shards shardId = Shards.of(shards);
         Player player = playerService.searchPlayer(playerName);
         if (player == null) {
             try {
-                return ResponseEntity.ok(fetchHelper(shards, playerName));
+                return ResponseEntity.ok(fetchHelper(shardId, playerName));
             } catch (JsonProcessingException | TooManyRequestsException | NotFoundException e) {
                 return ResponseEntity.notFound().build();
             }
@@ -43,10 +44,11 @@ public class PlayerSearchController {
 
     @GetMapping("/fetch/shards/{shards}/player/{playerName}")
     public ResponseEntity<Player> fetchPlayer(
-            @PathVariable Shards shards,
+            @PathVariable String shards,
             @PathVariable PlayerName playerName) {
+        Shards shardId = Shards.of(shards);
         try {
-            return ResponseEntity.ok(fetchHelper(shards, playerName));
+            return ResponseEntity.ok(fetchHelper(shardId, playerName));
         } catch (JsonProcessingException | TooManyRequestsException | NotFoundException e) {
             return ResponseEntity.notFound().build();
         }
