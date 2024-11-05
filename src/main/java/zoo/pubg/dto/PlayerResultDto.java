@@ -1,22 +1,13 @@
 package zoo.pubg.dto;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import zoo.pubg.domain.Player;
 import zoo.pubg.domain.PlayerMatchResult;
 
-@RequiredArgsConstructor
-@Getter
-public class PlayerResultDto {
 
-    private final Player player;
-    private final Integer dbno;
-    private final Float damageDealt;
-    private final Integer headshotKills;
-    private final Integer kills;
-    private final Integer assists;
-    private final Float longestKill;
-    private final Integer winPlace;
+@Getter
+public record PlayerResultDto(Player player, Integer dbno, Float damageDealt, Integer headshotKills, Integer kills,
+                              Integer assists, Float longestKill, Integer winPlace) {
 
     public static PlayerResultDto from(PlayerMatchResult playerMatchResult) {
         return new PlayerResultDto(
