@@ -31,7 +31,11 @@ public class PlayerMatchRepository {
 
     public Page<PlayerMatchResult> findAllWithPagination(Player player, int page, int size) {
         List<PlayerMatchResult> results = em.createQuery(
-                        "SELECT pm FROM PlayerMatchResult pm WHERE pm.player = :player", PlayerMatchResult.class)
+                        """
+                                SELECT pm FROM PlayerMatchResult pm
+                                JOIN pm.match m
+                                WHERE pm.player = :player
+                                ORDER BY m.createdAt DESC""", PlayerMatchResult.class)
                 .setParameter("player", player)
                 .setFirstResult(page * size)
                 .setMaxResults(size)
