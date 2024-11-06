@@ -1,5 +1,6 @@
 package zoo.pubg.domain.rank;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +31,7 @@ public class Rank {
     @JoinColumn(name = "seasonId", referencedColumnName = "seasonId")
     private Season season;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "rankedDetailsId", referencedColumnName = "rankedDetailsId")
     private RankedDetails rankedDetails;
 
