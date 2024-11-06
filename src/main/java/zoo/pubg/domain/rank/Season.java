@@ -17,4 +17,8 @@ public class Season {
     @AttributeOverride(name = "id", column = @Column(name = "seasonId"))
     private SeasonId id;
     private Boolean isCurrentSeason;
+
+    public void update(Season other) {
+        this.isCurrentSeason = other.isCurrentSeason;
+    }
 }
