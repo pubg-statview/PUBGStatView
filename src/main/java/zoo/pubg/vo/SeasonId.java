@@ -14,5 +14,6 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public final class SeasonId {
+
     private String id;
 }

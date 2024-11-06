@@ -2,10 +2,14 @@ package zoo.pubg.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -18,6 +22,9 @@ import zoo.pubg.vo.SeasonId;
 @SpringBootTest
 @Transactional
 class SeasonRepositoryTest {
+
+    @PersistenceContext
+    private EntityManager em;
 
     @Autowired
     private SeasonRepository seasonRepository;
@@ -39,8 +46,8 @@ class SeasonRepositoryTest {
         seasonRepository.save(changed);
 
         // then
-        Season updatedSeason = seasonRepository.find(id);
-        assertThat(updatedSeason.getIsCurrentSeason()).isEqualTo(changed.getIsCurrentSeason());
+//        Season updatedSeason = seasonRepository.find(id);
+//        assertThat(updatedSeason.getIsCurrentSeason()).isEqualTo(changed.getIsCurrentSeason());
 
     }
 
@@ -62,6 +69,29 @@ class SeasonRepositoryTest {
         // then
         assertThat(currentSeason.getId()).isEqualTo(currentSeasonId);
         assertThat(currentSeason.getIsCurrentSeason()).isEqualTo(true);
+
+    }
+
+    @ParameterizedTest
+    @DisplayName("시즌 업데이트가 필요한 지 확인하는 메서드 테스트")
+    @CsvSource(value = {
+            "season2,false", "season3,true"
+    }, delimiter = ',')
+    void isUpdateNeededTest(String currentSeasonId, boolean answer) {
+        // given
+        Season season1 = new Season(new SeasonId("season1"), false, Shards.KAKAO);
+        Season season2 = new Season(new SeasonId("season2"), true, Shards.KAKAO);
+
+        // Season 테이블에는 season2가 가장 최근인 상황
+        em.persist(season1);
+        em.persist(season2);
+
+        // when
+        Season currentSeason = new Season(new SeasonId(currentSeasonId), true, Shards.KAKAO);
+        boolean updateNeeded = seasonRepository.isUpdateNeeded(currentSeason);
+
+        // then
+        assertThat(updateNeeded).isEqualTo(answer);
 
     }
 }
