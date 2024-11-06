@@ -1,6 +1,7 @@
 package zoo.pubg.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import zoo.pubg.domain.rank.Season;
 import zoo.pubg.repository.SeasonRepository;
 import zoo.pubg.service.api.PubgBasicApi;
 import zoo.pubg.service.parser.SeasonApiParser;
+import zoo.pubg.service.parser.deserialization.season.SeasonDeserializer;
 
 @Service
 @Transactional(readOnly = true)
@@ -18,7 +20,7 @@ public class SeasonService {
 
     private final static SeasonApiParser parser = new SeasonApiParser();
 
-    private PubgBasicApi pubgBasicApi;
+    private final PubgBasicApi pubgBasicApi;
 
     @Autowired
     private SeasonRepository seasonRepository;
@@ -27,8 +29,11 @@ public class SeasonService {
         return seasonRepository.findCurrentSeason();
     }
 
+    @Transactional
     public void fetch(Shards shards) throws JsonProcessingException {
         String response = pubgBasicApi.fetchSeasons(shards.getShardName());
-        parser.parse(response);
+        SeasonDeserializer deserializer = parser.parse(response);
+        List<Season> entities = deserializer.toEntities(shards);
+        entities.forEach(entity -> seasonRepository.save(entity));
     }
 }
