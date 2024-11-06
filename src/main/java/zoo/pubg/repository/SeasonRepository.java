@@ -20,6 +20,12 @@ public class SeasonRepository {
         return em.find(Season.class, id);
     }
 
+    public Season findCurrentSeason() {
+        return em.createQuery(
+                "SELECT s FROM Season s WHERE isCurrentSeason = true", Season.class
+        ).getSingleResult();
+    }
+
     public void save(Season season) {
         Season origin = find(season.getId());
         if (origin != null) {
