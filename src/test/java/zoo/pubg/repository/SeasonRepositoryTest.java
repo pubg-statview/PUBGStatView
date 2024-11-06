@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
+import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.rank.Season;
 import zoo.pubg.vo.SeasonId;
 
@@ -27,10 +28,10 @@ class SeasonRepositoryTest {
         // given
         SeasonId id = new SeasonId("123");
         Season origin = new Season(
-                id, true
+                id, true, Shards.KAKAO
         );
         Season changed = new Season(
-                id, false
+                id, false, Shards.KAKAO
         );
 
         // when
@@ -49,9 +50,9 @@ class SeasonRepositoryTest {
         // given
         SeasonId currentSeasonId = new SeasonId("1");
         List<Season> seasons = List.of(
-                new Season(currentSeasonId, true),
-                new Season(new SeasonId("2"), false),
-                new Season(new SeasonId("3"), false)
+                new Season(currentSeasonId, true, Shards.KAKAO),
+                new Season(new SeasonId("2"), false, Shards.KAKAO),
+                new Season(new SeasonId("3"), false, Shards.KAKAO)
         );
         seasons.forEach(seasonRepository::save);
 
