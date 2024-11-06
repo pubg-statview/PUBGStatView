@@ -94,4 +94,18 @@ class SeasonRepositoryTest {
         assertThat(updateNeeded).isEqualTo(answer);
 
     }
+
+    @Test
+    @DisplayName("시즌 정보가 비어있는 경우")
+    void isUpdatedNeededWhenSeasonEmpty() {
+        // given
+        Season currentSeason = new Season(new SeasonId("season1"), true, Shards.KAKAO);
+
+        // when
+        boolean updateNeeded = seasonRepository.isUpdateNeeded(currentSeason);
+
+        // then
+        assertThat(updateNeeded).isEqualTo(true);
+
+    }
 }
