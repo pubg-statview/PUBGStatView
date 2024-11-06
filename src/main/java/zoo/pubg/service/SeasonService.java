@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.rank.Season;
+import zoo.pubg.exception.NotFoundException;
 import zoo.pubg.repository.SeasonRepository;
 import zoo.pubg.service.api.PubgBasicApi;
 import zoo.pubg.service.parser.SeasonApiParser;
@@ -25,8 +26,8 @@ public class SeasonService {
     @Autowired
     private SeasonRepository seasonRepository;
 
-    public Season getCurrentSeason() {
-        return seasonRepository.findCurrentSeason();
+    public Season getCurrentSeason(Shards shards) {
+        return seasonRepository.findCurrentSeason(shards);
     }
 
     @Transactional
@@ -34,6 +35,27 @@ public class SeasonService {
         String response = pubgBasicApi.fetchSeasons(shards.getShardName());
         SeasonDeserializer deserializer = parser.parse(response);
         List<Season> entities = deserializer.toEntities(shards);
-        entities.forEach(entity -> seasonRepository.save(entity));
+        List<Season> seasons = seasonRepository.findAll(shards);
+        Season currentSeason = seasonRepository.findCurrentSeason(shards);
+        Season currentSeasonFromApi = findCurrentSeason(entities);
+
+        if (seasons.isEmpty() || currentSeason == null) {
+            for (Season entity : entities) {
+                seasonRepository.save(entity);
+            }
+            return;
+        }
+
+        if (!currentSeason.hasSameSeasonId(currentSeasonFromApi)) {
+            currentSeason.update(false);
+            seasonRepository.save(currentSeasonFromApi);
+        }
+    }
+
+    private Season findCurrentSeason(List<Season> seasons) {
+        return seasons.stream()
+                .filter(Season::getIsCurrentSeason)
+                .findAny()
+                .orElseThrow(NotFoundException::new);
     }
 }

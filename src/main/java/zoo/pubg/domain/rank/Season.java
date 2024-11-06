@@ -11,11 +11,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.vo.SeasonId;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class Season {
 
@@ -32,13 +34,17 @@ public class Season {
 
     private Boolean isCurrentSeason;
 
-    public void update(Season other) {
-        this.isCurrentSeason = other.isCurrentSeason;
-    }
-
     public Season(SeasonId seasonId, Boolean isCurrentSeason, Shards shards) {
         this.seasonId = seasonId;
         this.shards = shards;
         this.isCurrentSeason = isCurrentSeason;
+    }
+
+    public void update(boolean isCurrentSeason) {
+        this.isCurrentSeason = isCurrentSeason;
+    }
+
+    public boolean hasSameSeasonId(Season other) {
+        return seasonId.equals(other.seasonId);
     }
 }
