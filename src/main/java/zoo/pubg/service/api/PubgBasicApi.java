@@ -25,4 +25,9 @@ public interface PubgBasicApi {
             @PathVariable("shards") String shards,
             @PathVariable("matchId") String matchId
     );
+
+    @GetMapping("/shards/{shards}/seasons")
+    String fetchSeasons(
+            @PathVariable("shards") String shards
+    );
 }
