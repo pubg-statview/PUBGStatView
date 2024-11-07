@@ -13,7 +13,7 @@ public record RankStatisticalData(
         Float kda,
         Integer kills,
         Integer deaths,
-        Float damageDealts,
-        Integer dbnos
+        Float damageDealt,
+        Integer dBNOs
 ) {
 }

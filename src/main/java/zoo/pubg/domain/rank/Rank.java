@@ -28,7 +28,7 @@ public class Rank {
     private String gameMode;
 
     @ManyToOne
-    @JoinColumn(name = "seasonId", referencedColumnName = "seasonId")
+    @JoinColumn(name = "id", referencedColumnName = "id")
     private Season season;
 
     @OneToOne(cascade = CascadeType.PERSIST)
