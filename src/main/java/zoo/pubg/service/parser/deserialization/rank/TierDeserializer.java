@@ -5,7 +5,7 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class Tier {
+public class TierDeserializer {
     private String tier;
     private String subTier;
 }
