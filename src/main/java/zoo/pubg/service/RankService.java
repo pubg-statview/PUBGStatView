@@ -28,6 +28,7 @@ public class RankService {
     public void fetch(Shards shards, Player player, Season season) throws JsonProcessingException {
         String responseString = pubgBasicApi.fetchRank(shards.getShardName(), player.getPlayerId().getPlayerId(),
                 season.getSeasonId().getId());
-        RankDeserializer rankDeserializer = parser.parse((responseString));
+        RankDeserializer rankDeserializer = parser.parse(responseString);
+        
     }
 }

@@ -3,10 +3,11 @@ package zoo.pubg.service.parser.deserialization.rank;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import lombok.ToString;
 import zoo.pubg.constant.GameModeType;
-import zoo.pubg.domain.rank.RankedDetails;
+import zoo.pubg.service.dto.RankedDetailsDto;
 
 @ToString
 public class RankedGameModeStats {
@@ -23,10 +24,9 @@ public class RankedGameModeStats {
         this.rankedGameModeStats.put(gameModeType, value);
     }
 
-    public RankedDetails get(GameModeType key) {
-        if (!rankedGameModeStats.containsKey(key)) {
-            return null;
-        }
-        return rankedGameModeStats.get(key).toEntity();
+    public List<RankedDetailsDto> getAllDetails() {
+        return rankedGameModeStats.keySet().stream()
+                .map(key -> new RankedDetailsDto(key, rankedGameModeStats.get(key).toEntity()))
+                .toList();
     }
 }

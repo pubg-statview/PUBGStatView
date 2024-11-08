@@ -3,10 +3,11 @@ package zoo.pubg.service.parser;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import zoo.pubg.constant.GameModeType;
-import zoo.pubg.domain.rank.RankedDetails;
+import zoo.pubg.service.dto.RankedDetailsDto;
 import zoo.pubg.service.parser.deserialization.rank.RankDeserializer;
 
 class RankApiParserTest {
@@ -41,8 +42,9 @@ class RankApiParserTest {
         RankDeserializer deserializer = parser.parse(json);
 
         // then
-        RankedDetails rankedDetails = deserializer.get(GameModeType.SQUAD_FPP);
-        assertThat(rankedDetails.getTier().getCurrentTier()).isEqualTo("Gold");
+        RankedDetailsDto dto = deserializer.getAllDetails().get(0);
+        assertThat(dto.type()).isEqualTo(GameModeType.SQUAD_FPP);
+        assertThat(dto.details().getTier().getCurrentTier()).isEqualTo("Gold");
         System.out.println(deserializer);
     }
 
@@ -56,8 +58,8 @@ class RankApiParserTest {
         RankDeserializer deserializer = parser.parse(json);
 
         // then
-        RankedDetails rankedDetails = deserializer.get(GameModeType.SOLO);
-        assertThat(rankedDetails).isEqualTo(null);
+        List<RankedDetailsDto> dtos = deserializer.getAllDetails();
+        assertThat(dtos.size()).isEqualTo(0);
         System.out.println(deserializer);
     }
 }
