@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import zoo.pubg.constant.GameModeType;
+import zoo.pubg.domain.rank.RankedDetails;
 import zoo.pubg.service.parser.deserialization.rank.RankDeserializer;
 
 class RankApiParserTest {
@@ -39,11 +41,13 @@ class RankApiParserTest {
         RankDeserializer deserializer = parser.parse(json);
 
         // then
+        RankedDetails rankedDetails = deserializer.get(GameModeType.SQUAD_FPP);
+        assertThat(rankedDetails.getTier().getCurrentTier()).isEqualTo("Gold");
         System.out.println(deserializer);
     }
 
     @Test
-    @DisplayName("rank parser test - 값이 없을 때")
+    @DisplayName("rank parser test - 값이 없을 때 (혹은 원하는 game mode가 없을 때")
     void parserTestNull() throws JsonProcessingException {
         // given
         String json = jsonFormat.formatted("");
@@ -52,7 +56,8 @@ class RankApiParserTest {
         RankDeserializer deserializer = parser.parse(json);
 
         // then
-        assertThat(deserializer).isEqualTo(null);
-
+        RankedDetails rankedDetails = deserializer.get(GameModeType.SOLO);
+        assertThat(rankedDetails).isEqualTo(null);
+        System.out.println(deserializer);
     }
 }
