@@ -17,7 +17,7 @@ public interface PubgBasicApi {
     @GetMapping("/shards/{shards}/players")
     String fetchPlayerStatsById(
             @PathVariable("shards") String shards,
-            @RequestParam("filter[playerIds]") String playerName
+            @RequestParam("filter[playerIds]") String playerIds
     );
 
     @GetMapping("/shards/{shards}/matches/{matchId}")
@@ -30,4 +30,10 @@ public interface PubgBasicApi {
     String fetchSeasons(
             @PathVariable("shards") String shards
     );
+//
+//    @GetMapping("/shards/{shards}/players/{playerId}/seasons/{seasonId}/ranked")
+//    String fetchRank(
+//            @PathVariable("shards") String shards,
+//            @
+//    )
 }
