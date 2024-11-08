@@ -21,11 +21,11 @@ public class RankRepository {
                 .getResultList();
     }
 
-    public Rank findBy(Season season, Player player) {
+    public Rank findBy(Player player, Season season) {
         List<Rank> resultList = em.createQuery(
-                        "SELECT r FROM Rank r WHERE r.season = :season AND r.player = :player", Rank.class
-                ).setParameter("season", season)
-                .setParameter("player", player)
+                        "SELECT r FROM Rank r WHERE r.player = :player AND r.season = :season", Rank.class
+                ).setParameter("player", player)
+                .setParameter("season", season)
                 .getResultList();
         if (resultList.isEmpty()) {
             return null;
@@ -34,7 +34,7 @@ public class RankRepository {
     }
 
     public void save(Rank rank) {
-        Rank origin = findBy(rank.getSeason(), rank.getPlayer());
+        Rank origin = findBy(rank.getPlayer(), rank.getSeason());
         if (origin == null) {
             em.persist(rank);
             return;
