@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.constant.Shards;
@@ -29,6 +30,7 @@ class SeasonRepositoryTest {
 
     @Test
     @DisplayName("현재 시즌만 불러오는 기능 테스트")
+    @Sql(statements = "DELETE FROM Season")
     void currentSeasonTest() {
         // given
         SeasonId currentSeasonId = new SeasonId("1");
