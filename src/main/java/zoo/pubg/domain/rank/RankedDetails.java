@@ -31,4 +31,9 @@ public class RankedDetails {
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "tierId", referencedColumnName = "tierId")
     private Tier tier;
+
+    public RankedDetails(RankStatisticalData rankStatisticalData, Tier tier) {
+        this.rankStatisticalData = rankStatisticalData;
+        this.tier = tier;
+    }
 }
