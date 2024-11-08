@@ -36,32 +36,34 @@ class RankRepositoryTest {
     @Autowired
     private RankRepository rankRepository;
 
-    private final static Player player = new Player(
-            new PlayerId("account.test1234"), new PlayerName("testPlayer"), Shards.KAKAO, "clan.test1234clan",
-            PlayerType.ETC, LocalDateTime.now()
-    );
-    private final static Season season = new Season(
-            new SeasonId("season.1"), true, Shards.KAKAO
-    );
-
-    private final static Rank rank = new Rank(
-            null, "squad-test", season,
-            new RankedDetails(
-                    null,
-                    new RankStatisticalData(
-                            0, 0f, 0f, 0f, 0,
-                            0, 0f, 0, 0, 0f, 0
-                    ),
-                    new Tier(
-                            null,
-                            "Gold", "5", 2400,
-                            "Gold", "1", 2800
-                    )
-            ), player
-    );
+    private Player player;
+    private Season season;
+    private Rank rank;
 
     @BeforeEach
     void setUp() {
+        player = new Player(
+                new PlayerId("account.test1234"), new PlayerName("testPlayer"), Shards.KAKAO, "clan.test1234clan",
+                PlayerType.ETC, LocalDateTime.now()
+        );
+        season = new Season(
+                new SeasonId("season.1"), true, Shards.KAKAO
+        );
+        rank = new Rank(
+                null, "squad-test", season,
+                new RankedDetails(
+                        null,
+                        new RankStatisticalData(
+                                0, 0f, 0f, 0f, 0,
+                                0, 0f, 0, 0, 0f, 0
+                        ),
+                        new Tier(
+                                null,
+                                "Gold", "5", 2400,
+                                "Gold", "1", 2800
+                        )
+                ), player
+        );
         em.persist(player);
         em.persist(season);
     }
@@ -73,7 +75,7 @@ class RankRepositoryTest {
         rankRepository.save(rank);
 
         // when & then
-        Rank result = rankRepository.findBy(season, player);
+        Rank result = rankRepository.findBy(player, season);
 
         Tier tier = result.getRankedDetails().getTier();
 
@@ -103,7 +105,7 @@ class RankRepositoryTest {
 
         // when
         rankRepository.save(rankFromApi);
-        Rank updatedRank = rankRepository.findBy(season, player);
+        Rank updatedRank = rankRepository.findBy(player, season);
         int roundsPlayed = updatedRank.getRankedDetails().getRankStatisticalData().roundsPlayed();
         String currentTier = updatedRank.getRankedDetails().getTier().getCurrentTier();
 
