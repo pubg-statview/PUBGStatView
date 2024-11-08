@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zoo.pubg.vo.RankStatisticalData;
@@ -16,6 +17,7 @@ import zoo.pubg.vo.RankStatisticalData;
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class RankedDetails {
 
     @Id

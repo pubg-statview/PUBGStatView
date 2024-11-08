@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zoo.pubg.domain.Player;
@@ -18,6 +19,7 @@ import zoo.pubg.domain.Player;
 @Getter
 @Table(name = "`RankedStats`")
 @NoArgsConstructor
+@AllArgsConstructor
 public class Rank {
 
     @Id
@@ -38,4 +40,8 @@ public class Rank {
     @ManyToOne
     @JoinColumn(name = "playerId", referencedColumnName = "playerId")
     private Player player;
+
+    public void update(Rank other) {
+        this.rankedDetails = other.rankedDetails;
+    }
 }
