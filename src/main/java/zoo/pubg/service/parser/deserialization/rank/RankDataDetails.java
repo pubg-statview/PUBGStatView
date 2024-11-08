@@ -11,13 +11,6 @@ import zoo.pubg.vo.RankStatisticalData;
 @ToString
 public class RankDataDetails {
 
-    @Getter
-    @ToString
-    private static class Tier {
-        private String tier;
-        private String subTier;
-    }
-
     private Tier currentTier;
     private Integer currentRankPoint;
 
