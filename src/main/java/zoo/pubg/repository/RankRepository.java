@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import org.springframework.stereotype.Repository;
+import zoo.pubg.constant.GameModeType;
 import zoo.pubg.domain.Player;
 import zoo.pubg.domain.rank.Rank;
 import zoo.pubg.domain.rank.Season;
@@ -21,11 +22,21 @@ public class RankRepository {
                 .getResultList();
     }
 
-    public Rank findBy(Player player, Season season) {
-        List<Rank> resultList = em.createQuery(
+    public List<Rank> findBy(Player player, Season season) {
+        return em.createQuery(
                         "SELECT r FROM Rank r WHERE r.player = :player AND r.season = :season", Rank.class
                 ).setParameter("player", player)
                 .setParameter("season", season)
+                .getResultList();
+    }
+
+    public Rank find(Player player, Season season, GameModeType type) {
+        List<Rank> resultList = em.createQuery(
+                        "SELECT r FROM Rank r WHERE r.player = :player AND r.season = :season AND r.gameMode = :type",
+                        Rank.class
+                ).setParameter("player", player)
+                .setParameter("season", season)
+                .setParameter("type", type)
                 .getResultList();
         if (resultList.isEmpty()) {
             return null;
@@ -34,7 +45,7 @@ public class RankRepository {
     }
 
     public void save(Rank rank) {
-        Rank origin = findBy(rank.getPlayer(), rank.getSeason());
+        Rank origin = find(rank.getPlayer(), rank.getSeason(), rank.getGameMode());
         if (origin == null) {
             em.persist(rank);
             return;

@@ -76,7 +76,7 @@ class RankRepositoryTest {
         rankRepository.save(rank);
 
         // when & then
-        Rank result = rankRepository.findBy(player, season);
+        Rank result = rankRepository.findBy(player, season).get(0);
 
         Tier tier = result.getRankedDetails().getTier();
 
@@ -106,7 +106,7 @@ class RankRepositoryTest {
 
         // when
         rankRepository.save(rankFromApi);
-        Rank updatedRank = rankRepository.findBy(player, season);
+        Rank updatedRank = rankRepository.findBy(player, season).get(0);
         int roundsPlayed = updatedRank.getRankedDetails().getRankStatisticalData().roundsPlayed();
         String currentTier = updatedRank.getRankedDetails().getTier().getCurrentTier();
 
