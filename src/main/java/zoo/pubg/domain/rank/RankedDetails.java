@@ -1,18 +1,23 @@
 package zoo.pubg.domain.rank;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import zoo.pubg.vo.RankStatisticalData;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class RankedDetails {
 
     @Id
@@ -20,19 +25,15 @@ public class RankedDetails {
     @Column(name = "rankedDetailsId")
     private Long Id;
 
-    private Integer roundsPlayed;
-    private Float avgRank;
-    private Float top10Ratio;
-    private Float winRatio;
-    private Integer assists;
-    private Integer wins;
-    private Float kda;
-    private Integer kills;
-    private Integer deaths;
-    private Float damageDealts;
-    private Integer dbnos;
+    @Embedded
+    private RankStatisticalData rankStatisticalData;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "tierId", referencedColumnName = "tierId")
     private Tier tier;
+
+    public RankedDetails(RankStatisticalData rankStatisticalData, Tier tier) {
+        this.rankStatisticalData = rankStatisticalData;
+        this.tier = tier;
+    }
 }
