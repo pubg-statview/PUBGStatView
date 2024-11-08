@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import zoo.pubg.constant.GameModeType;
 import zoo.pubg.domain.Player;
 import zoo.pubg.domain.rank.Rank;
+import zoo.pubg.domain.rank.RankedDetails;
 import zoo.pubg.domain.rank.Season;
 
 @Repository
@@ -49,6 +50,10 @@ public class RankRepository {
         if (origin == null) {
             em.persist(rank);
             return;
+        }
+        RankedDetails rankedDetails = origin.getRankedDetails();
+        if (rankedDetails != null) {
+            em.remove(rankedDetails);
         }
         origin.update(rank);
     }

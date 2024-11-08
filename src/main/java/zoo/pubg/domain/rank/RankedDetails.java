@@ -28,7 +28,7 @@ public class RankedDetails {
     @Embedded
     private RankStatisticalData rankStatisticalData;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "tierId", referencedColumnName = "tierId")
     private Tier tier;
 
