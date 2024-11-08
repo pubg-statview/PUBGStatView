@@ -3,6 +3,8 @@ package zoo.pubg.domain.rank;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,6 +15,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import zoo.pubg.constant.GameModeType;
 import zoo.pubg.domain.Player;
 
 @Entity
@@ -27,7 +30,8 @@ public class Rank {
     @Column(name = "rankedStatsId")
     private Long id;
 
-    private String gameMode;
+    @Enumerated(EnumType.STRING)
+    private GameModeType gameMode;
 
     @ManyToOne
     @JoinColumn(name = "seasonId", referencedColumnName = "id") // seasonId = Season.id (!= Season.seasonId)

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
+import zoo.pubg.constant.GameModeType;
 import zoo.pubg.constant.PlayerType;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Player;
@@ -50,7 +51,7 @@ class RankRepositoryTest {
                 new SeasonId("season.1"), true, Shards.KAKAO
         );
         rank = new Rank(
-                null, "squad-test", season,
+                null, GameModeType.SQUAD, season,
                 new RankedDetails(
                         null,
                         new RankStatisticalData(
@@ -88,7 +89,7 @@ class RankRepositoryTest {
         // given
         em.persist(rank);
         Rank rankFromApi = new Rank(
-                null, "squad-test", season,
+                null, GameModeType.SQUAD, season,
                 new RankedDetails(
                         null,
                         new RankStatisticalData(
