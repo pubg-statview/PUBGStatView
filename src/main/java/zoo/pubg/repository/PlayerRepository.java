@@ -39,23 +39,24 @@ public class PlayerRepository {
     }
 
     public void save(Player player) {
-        valid(player);
-        if (this.isExists(player)) {
-            em.merge(player);
-            return;
-        }
-        em.persist(player);
-    }
+        Player foundById = find(player.getPlayerId());
+        Player foundByName = findByName(player.getName());
 
-    private void valid(Player player) {
-        Player found = findByName(player.getName());
-        if (found == null) {
+        if (foundById == null && foundByName == null) {
+            em.persist(player);
             return;
         }
-        if (!found.getPlayerId().equals(player.getPlayerId())) {
-            PlayerName replacedName = new PlayerName(found.getPlayerId().getPlayerId());
-            found.updateName(replacedName);
+
+        if (foundByName != null && !player.hasSameId(foundByName)) {
+            PlayerName newName = new PlayerName(foundByName.getPlayerId().getPlayerId());
+            foundByName.updateName(newName);
             em.flush();
+        }
+
+        if (foundById == null) {
+            em.persist(player);
+        } else {
+            foundById.updateAll(player);
         }
     }
 }
