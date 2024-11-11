@@ -1,8 +1,8 @@
 package zoo.pubg.repository;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import java.util.List;
 import org.springframework.stereotype.Repository;
 import zoo.pubg.domain.Player;
 import zoo.pubg.vo.PlayerId;
@@ -28,14 +28,14 @@ public class PlayerRepository {
     }
 
     public Player findByName(PlayerName name) {
-        try {
-            return em.createQuery("select p from Player p " +
-                            "where p.name = :name", Player.class)
-                    .setParameter("name", name)
-                    .getSingleResult();
-        } catch (NoResultException e) {
+        List<Player> result = em.createQuery("select p from Player p " +
+                        "where p.name = :name", Player.class)
+                .setParameter("name", name)
+                .getResultList();
+        if (result.isEmpty()) {
             return null;
         }
+        return result.get(0);
     }
 
     public void save(Player player) {
