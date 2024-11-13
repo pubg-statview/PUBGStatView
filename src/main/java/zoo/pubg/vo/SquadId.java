@@ -1,6 +1,7 @@
 package zoo.pubg.vo;
 
 import jakarta.persistence.Embeddable;
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
@@ -14,9 +15,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class SquadId {
+public class SquadId implements Serializable {
 
-    private String id;
+    private String squadId;
 
     public static SquadId from(String... ids) {
         String join = String.join(",", ids);
