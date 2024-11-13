@@ -37,14 +37,12 @@ public class MatchService {
 
     public void fetchMatches(MatchIdsDto matchIdsDto) {
         Shards shards = matchIdsDto.shards();
-        matchIdsDto.matchIds()
-                .forEach(matchId -> {
-                    try {
-                        fetchMatchHistory(shards, matchId);
-                    } catch (JsonProcessingException e) {
-                        e.printStackTrace();
-                    }
-                });
+        for (MatchId matchId : matchIdsDto.matchIds()) {
+            try {
+                fetchMatchHistory(shards, matchId);
+            } catch (JsonProcessingException ignore) {
+            }
+        }
     }
 
     public void fetchMatchHistory(Shards shards, MatchId matchId) throws JsonProcessingException {

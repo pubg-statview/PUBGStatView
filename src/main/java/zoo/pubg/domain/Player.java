@@ -38,4 +38,15 @@ public class Player {
     public void updateName(PlayerName newName) {
         this.name = newName;
     }
+
+    public void updateAll(Player other) {
+        this.name = other.name;
+        this.shardId = other.shardId;
+        this.clanId = other.clanId;
+        this.lastUpdated = other.lastUpdated;
+    }
+
+    public boolean hasSameId(Player other) {
+        return playerId.equals(other.getPlayerId());
+    }
 }
