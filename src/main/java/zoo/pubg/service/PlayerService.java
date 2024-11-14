@@ -1,6 +1,8 @@
 package zoo.pubg.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,7 +10,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Player;
-import zoo.pubg.dto.MatchIdsDto;
 import zoo.pubg.dto.PlayerMatchIdsDto;
 import zoo.pubg.repository.PlayerRepository;
 import zoo.pubg.service.api.PubgBasicApi;
@@ -38,17 +39,13 @@ public class PlayerService {
     public PlayerMatchIdsDto fetchPlayer(Shards shards, PlayerName name) throws JsonProcessingException {
         String responseString = pubgBasicAPI.fetchPlayerStatsByName(shards.getShardName(), name.getName());
         PlayerDto playerDto = parser.parse(responseString);
-        PlayerData data = playerDto.getFirstPlayer();
-        Player player = data.toEntity();
-        playerRepository.save(player);
-        return new PlayerMatchIdsDto(
-                player, new MatchIdsDto(shards, data.getMatchIds())
-        );
+        List<PlayerMatchIdsDto> playerMatchIdsDtos = saveAndGetDtos(playerDto);
+        return playerMatchIdsDtos.get(0);
     }
 
-    public void fetchPlayersByIds(Shards shards, PlayerIds ids) throws JsonProcessingException {
+    public List<PlayerMatchIdsDto> fetchPlayersByIds(Shards shards, PlayerIds ids) throws JsonProcessingException {
         if (ids.isEmpty()) {
-            return;
+            throw new IllegalArgumentException("");
         }
         if (ids.size() > 10) {
             throw new IllegalArgumentException("10개 이하여야함 (API 제한)");
@@ -56,9 +53,18 @@ public class PlayerService {
         String joinId = ids.joinToString();
         String response = pubgBasicAPI.fetchPlayerStatsById(shards.getShardName(), joinId);
         PlayerDto playerDto = parser.parse(response);
+        return saveAndGetDtos(playerDto);
+    }
+
+    private List<PlayerMatchIdsDto> saveAndGetDtos(PlayerDto playerDto) {
+        List<PlayerMatchIdsDto> dtos = new ArrayList<>();
+
         for (PlayerData data : playerDto.data()) {
             Player player = data.toEntity();
             playerRepository.save(player);
+            dtos.add(PlayerMatchIdsDto.from(data));
         }
+
+        return dtos;
     }
 }
