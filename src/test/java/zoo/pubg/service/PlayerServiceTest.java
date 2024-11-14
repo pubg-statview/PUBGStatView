@@ -81,6 +81,6 @@ class PlayerServiceTest {
         );
         Shards shards = Shards.KAKAO;
 
-        playerService.fetchPlayersByIds(shards, new PlayerIds(ids));
+        playerService.fetchPlayersByIds(shards, PlayerIds.from(ids));
     }
 }

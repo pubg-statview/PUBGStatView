@@ -11,8 +11,14 @@ public class PlayerIds {
         this.playerIds = new ArrayList<>();
     }
 
-    public PlayerIds(List<String> stringIds) {
-        this.playerIds = stringIds.stream().map(PlayerId::new).toList();
+    public PlayerIds(List<PlayerId> playerIds) {
+        this.playerIds = playerIds;
+    }
+
+    public static PlayerIds from(List<String> stringIds) {
+        return new PlayerIds(
+                stringIds.stream().map(PlayerId::new).toList()
+        );
     }
 
     public void add(PlayerId playerId) {
