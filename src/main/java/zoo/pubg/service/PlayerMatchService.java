@@ -16,7 +16,6 @@ import zoo.pubg.repository.PlayerRepository;
 import zoo.pubg.service.dto.ParticipantDto;
 import zoo.pubg.service.map.PlayerRosterMap;
 import zoo.pubg.vo.PlayerId;
-import zoo.pubg.vo.PlayerIds;
 
 @Service
 public class PlayerMatchService {
@@ -26,9 +25,6 @@ public class PlayerMatchService {
 
     @Autowired
     private PlayerMatchRepository playerMatchRepository;
-
-    @Autowired
-    private PlayerService playerService;
 
     public void fetch(Match match, List<ParticipantDto> participantDtos, PlayerRosterMap playerRosterMap)
             throws JsonProcessingException {
@@ -59,25 +55,6 @@ public class PlayerMatchService {
                     LocalDateTime.now()
             );
             playerRepository.save(player);
-        }
-    }
-
-    private void fetchUnregisterPlayer(Shards shards, List<ParticipantDto> participantDtos)
-            throws JsonProcessingException {
-        PlayerIds unregisterIds = new PlayerIds();
-        for (ParticipantDto participantDto : participantDtos) {
-            PlayerId id = participantDto.playerId();
-            if (playerRepository.isExistsId(id)) {
-                continue;
-            }
-            unregisterIds.add(id);
-            if (unregisterIds.size() == 10) {
-                playerService.fetchPlayersByIds(shards, unregisterIds);
-                unregisterIds.clear();
-            }
-        }
-        if (unregisterIds.size() <= 10) {
-            playerService.fetchPlayersByIds(shards, unregisterIds);
         }
     }
 }
