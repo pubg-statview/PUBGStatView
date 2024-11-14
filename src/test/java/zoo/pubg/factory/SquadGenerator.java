@@ -1,17 +1,15 @@
 package zoo.pubg.factory;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import zoo.pubg.domain.Player;
 import zoo.pubg.domain.Squad;
-import zoo.pubg.vo.PlayerIds;
+import zoo.pubg.domain.list.Players;
 import zoo.pubg.vo.SquadId;
 
 public class SquadGenerator {
 
-    public static Squad generate(List<Player> players) {
+    public static Squad generate(Players players) {
         SquadId squadId = SquadId.from(
-                new PlayerIds(players.stream().map(Player::getPlayerId).toList())
+                players.getPlayerIds()
         );
         return new Squad(squadId, LocalDateTime.now());
     }

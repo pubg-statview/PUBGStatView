@@ -1,12 +1,13 @@
 package zoo.pubg.domain.list;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import zoo.pubg.domain.Player;
 import zoo.pubg.vo.PlayerIds;
 import zoo.pubg.vo.PlayerNames;
 
-public class Players {
+public class Players implements Iterable<Player> {
 
     private final List<Player> players;
 
@@ -35,5 +36,10 @@ public class Players {
                         .map(Player::getPlayerId)
                         .toList()
         );
+    }
+
+    @Override
+    public Iterator<Player> iterator() {
+        return players.iterator();
     }
 }

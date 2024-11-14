@@ -1,12 +1,12 @@
 package zoo.pubg.factory;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import zoo.pubg.constant.PlayerType;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Player;
+import zoo.pubg.domain.list.Players;
 import zoo.pubg.vo.PlayerId;
 import zoo.pubg.vo.PlayerName;
 
@@ -22,9 +22,9 @@ public class PlayerGenerator {
         );
     }
 
-    public static List<Player> generatePlayers(int count) {
-        return IntStream.range(0, count)
+    public static Players generatePlayers(int count) {
+        return new Players(IntStream.range(0, count)
                 .mapToObj(i -> generatePlayer())
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 }
