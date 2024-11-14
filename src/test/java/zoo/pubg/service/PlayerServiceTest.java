@@ -1,8 +1,9 @@
 package zoo.pubg.service;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.List;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,7 @@ class PlayerServiceTest {
         PlayerName playerName = new PlayerName("asdfwew111");
         Shards shards = Shards.STEAM;
 
-        Assertions.assertThrows(
+        assertThrows(
                 NotFoundException.class,
                 () -> playerService.fetchPlayer(shards, playerName)
         ).printStackTrace();
@@ -54,7 +55,7 @@ class PlayerServiceTest {
         Shards shards = Shards.KAKAO;
         int times = 20;
 
-        Assertions.assertThrows(
+        assertThrows(
                 TooManyRequestsException.class,
                 () -> {
                     for (int i = 0; i < times; i++) {

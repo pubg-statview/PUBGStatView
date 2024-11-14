@@ -11,6 +11,7 @@ import zoo.pubg.domain.PlayerMatchResult;
 import zoo.pubg.dto.PlayerMatchResultDto;
 import zoo.pubg.repository.PlayerMatchRepository;
 import zoo.pubg.repository.PlayerRepository;
+import zoo.pubg.service.map.RosterPlayerMap;
 
 @Service
 @Transactional(readOnly = true)

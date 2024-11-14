@@ -15,6 +15,7 @@ import zoo.pubg.domain.Match;
 import zoo.pubg.domain.RosterMatchResult;
 import zoo.pubg.repository.MatchRepository;
 import zoo.pubg.service.dto.ParticipantDto;
+import zoo.pubg.service.map.PlayerRosterMap;
 import zoo.pubg.vo.MatchId;
 import zoo.pubg.vo.PlayerId;
 import zoo.pubg.vo.PlayerMatchId;

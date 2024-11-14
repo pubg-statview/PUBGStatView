@@ -1,4 +1,4 @@
-package zoo.pubg.service;
+package zoo.pubg.service.map;
 
 import java.util.HashMap;
 import java.util.Map;
