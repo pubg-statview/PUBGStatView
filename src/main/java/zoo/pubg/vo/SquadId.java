@@ -28,4 +28,10 @@ public class SquadId implements Serializable {
     public static SquadId from(List<String> ids) {
         return from(ids.toArray(String[]::new));
     }
+
+    public static SquadId from(PlayerIds ids) {
+        String join = ids.joinToString();
+        UUID uuid = UUID.nameUUIDFromBytes(join.getBytes(StandardCharsets.UTF_8));
+        return new SquadId(uuid.toString());
+    }
 }

@@ -20,4 +20,22 @@ class SquadIdTest {
         assertThat(fromArray).isEqualTo(fromList);
 
     }
+
+    @Test
+    @DisplayName("squad uuid 테스트 from PlayerIds")
+    void uuidFromPlayerIdsTest() {
+        // given
+        String[] ids = {"account.1234", "account.1010", "account.2020", "account.3030"};
+        PlayerIds playerIds = new PlayerIds();
+        for (String id : ids) {
+            playerIds.add(new PlayerId(id));
+        }
+        // when
+        SquadId fromArray = SquadId.from(ids);
+        SquadId fromPlayerIds = SquadId.from(playerIds);
+
+        // then
+        assertThat(fromArray).isEqualTo(fromPlayerIds);
+
+    }
 }
