@@ -67,7 +67,6 @@ public class PlayerService {
         }
         String joinId = names.joinToString();
         String response = pubgBasicAPI.fetchPlayerStatsByName(shards.getShardName(), joinId);
-        System.out.println(response);
         PlayerDto playerDto = parser.parse(response);
         return saveAndGetDtos(playerDto);
     }
