@@ -8,6 +8,6 @@ import lombok.Getter;
 @Getter
 public class SquadPlayerId implements Serializable {
 
-    private PlayerId playerId;
     private SquadId squadId;
+    private PlayerId playerId;
 }

@@ -16,11 +16,11 @@ public class SquadPlayer {
     @EmbeddedId
     private SquadPlayerId squadPlayerId;
 
-    private PlayerId getPlayerId() {
-        return squadPlayerId.getPlayerId();
-    }
-
     private SquadId getSquadId() {
         return squadPlayerId.getSquadId();
+    }
+
+    private PlayerId getPlayerId() {
+        return squadPlayerId.getPlayerId();
     }
 }
