@@ -13,6 +13,7 @@ import zoo.pubg.service.api.PubgBasicApi;
 import zoo.pubg.service.dto.DeserializedMatchDto;
 import zoo.pubg.service.dto.IncludedDto;
 import zoo.pubg.service.dto.MatchDataDto;
+import zoo.pubg.service.map.PlayerRosterMap;
 import zoo.pubg.service.parser.MatchApiParser;
 import zoo.pubg.service.parser.deserialization.match.MatchInformation;
 import zoo.pubg.vo.MatchId;

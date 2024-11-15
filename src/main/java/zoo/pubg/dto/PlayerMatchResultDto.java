@@ -1,7 +1,7 @@
 package zoo.pubg.dto;
 
 import zoo.pubg.domain.PlayerMatchResult;
-import zoo.pubg.service.RosterPlayerMap;
+import zoo.pubg.service.map.RosterPlayerMap;
 import zoo.pubg.vo.RosterId;
 
 public record PlayerMatchResultDto(MatchDto matchDto, PlayerResultDto playerResultDto, RosterId rosterId,

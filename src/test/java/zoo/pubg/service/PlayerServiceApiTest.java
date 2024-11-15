@@ -1,8 +1,9 @@
 package zoo.pubg.service;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.List;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,8 @@ import zoo.pubg.vo.PlayerName;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional
-class PlayerServiceTest {
+@Disabled
+class PlayerServiceApiTest {
 
     @Autowired
     private PlayerService playerService;
@@ -40,7 +42,7 @@ class PlayerServiceTest {
         PlayerName playerName = new PlayerName("asdfwew111");
         Shards shards = Shards.STEAM;
 
-        Assertions.assertThrows(
+        assertThrows(
                 NotFoundException.class,
                 () -> playerService.fetchPlayer(shards, playerName)
         ).printStackTrace();
@@ -54,7 +56,7 @@ class PlayerServiceTest {
         Shards shards = Shards.KAKAO;
         int times = 20;
 
-        Assertions.assertThrows(
+        assertThrows(
                 TooManyRequestsException.class,
                 () -> {
                     for (int i = 0; i < times; i++) {
@@ -66,6 +68,7 @@ class PlayerServiceTest {
 
     @Test
     @DisplayName("여러명의 player 동시 조회 테스트")
+    @Disabled
     void fetchPlayersTest() throws JsonProcessingException {
         // given
         List<String> ids = List.of("account.cf2acac6cb9741fba202f293aeaab56d",
@@ -80,6 +83,6 @@ class PlayerServiceTest {
         );
         Shards shards = Shards.KAKAO;
 
-        playerService.fetchPlayersByIds(shards, new PlayerIds(ids));
+        playerService.fetchPlayersByIds(shards, PlayerIds.from(ids));
     }
 }

@@ -15,4 +15,8 @@ public class SquadRepository {
     public Squad find(SquadId squadId) {
         return em.find(Squad.class, squadId);
     }
+
+    public void save(Squad squad) {
+        em.persist(squad);
+    }
 }
