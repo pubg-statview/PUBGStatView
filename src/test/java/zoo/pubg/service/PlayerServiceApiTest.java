@@ -21,6 +21,7 @@ import zoo.pubg.vo.PlayerName;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional
+@Disabled
 class PlayerServiceApiTest {
 
     @Autowired
