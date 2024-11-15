@@ -18,6 +18,7 @@ import zoo.pubg.service.parser.deserialization.player.PlayerData;
 import zoo.pubg.service.parser.deserialization.player.PlayerDto;
 import zoo.pubg.vo.PlayerIds;
 import zoo.pubg.vo.PlayerName;
+import zoo.pubg.vo.PlayerNames;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -52,6 +53,21 @@ public class PlayerService {
         }
         String joinId = ids.joinToString();
         String response = pubgBasicAPI.fetchPlayerStatsById(shards.getShardName(), joinId);
+        PlayerDto playerDto = parser.parse(response);
+        return saveAndGetDtos(playerDto);
+    }
+
+    public List<PlayerMatchIdsDto> fetchPlayersByNames(Shards shards, PlayerNames names)
+            throws JsonProcessingException {
+        if (names.isEmpty()) {
+            throw new IllegalArgumentException("");
+        }
+        if (names.size() > 10) {
+            throw new IllegalArgumentException("10개 이하여야함 (API 제한)");
+        }
+        String joinId = names.joinToString();
+        String response = pubgBasicAPI.fetchPlayerStatsByName(shards.getShardName(), joinId);
+        System.out.println(response);
         PlayerDto playerDto = parser.parse(response);
         return saveAndGetDtos(playerDto);
     }
