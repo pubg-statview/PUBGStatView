@@ -17,12 +17,11 @@ import zoo.pubg.exception.NotFoundException;
 import zoo.pubg.exception.TooManyRequestsException;
 import zoo.pubg.vo.PlayerIds;
 import zoo.pubg.vo.PlayerName;
-import zoo.pubg.vo.PlayerNames;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional
-class PlayerServiceTest {
+class PlayerServiceApiTest {
 
     @Autowired
     private PlayerService playerService;
@@ -84,18 +83,5 @@ class PlayerServiceTest {
         Shards shards = Shards.KAKAO;
 
         playerService.fetchPlayersByIds(shards, PlayerIds.from(ids));
-    }
-
-    @Test
-    @DisplayName("여러명의 player 동시 조회 테스트 (이름)")
-    @Disabled
-    void fetchPlayersByNameTest() throws JsonProcessingException {
-        // given
-        List<String> names = List.of(
-                "Lil_Ziu__Vert", "kakaochin9", "dydtjd0908"
-        );
-        Shards shards = Shards.KAKAO;
-
-        playerService.fetchPlayersByNames(shards, PlayerNames.from(names));
     }
 }
