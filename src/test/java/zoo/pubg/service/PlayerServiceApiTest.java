@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.exception.NotFoundException;
 import zoo.pubg.exception.TooManyRequestsException;
-import zoo.pubg.vo.PlayerIds;
 import zoo.pubg.vo.PlayerName;
+import zoo.pubg.vo.list.PlayerIds;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest

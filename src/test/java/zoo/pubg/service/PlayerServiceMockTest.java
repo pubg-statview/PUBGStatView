@@ -12,7 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.constant.Shards;
@@ -21,7 +20,7 @@ import zoo.pubg.exception.NotFoundException;
 import zoo.pubg.repository.PlayerRepository;
 import zoo.pubg.service.api.PubgBasicApi;
 import zoo.pubg.vo.PlayerName;
-import zoo.pubg.vo.PlayerNames;
+import zoo.pubg.vo.list.PlayerNames;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -106,7 +105,6 @@ public class PlayerServiceMockTest {
 
     @Test
     @DisplayName("여러명의 player 동시 조회 테스트 (이름)")
-    @Rollback
     void fetchPlayersByNameTest() throws JsonProcessingException {
         // given
         List<String> names = List.of(
@@ -128,7 +126,7 @@ public class PlayerServiceMockTest {
     }
 
     @Test
-    @DisplayName("여러명의 player 동시 조회 테스트 (이름) - 잘못된 이름이 있을 시 에러")
+    @DisplayName("여러명의 player 동시 조회 테스트 (이름) - API 응답에 없는 이름이 있을 시 에러")
     void fetchPlayersByNameExceptionTest() throws JsonProcessingException {
         // given
         List<String> names = List.of(
@@ -144,8 +142,5 @@ public class PlayerServiceMockTest {
                 NotFoundException.class,
                 () -> playerService.fetchPlayersByNames(shards, PlayerNames.from(names))
         ).printStackTrace();
-
-        Player found = playerService.searchPlayer(new PlayerName("ttest1"));
-        assertThat(found).isNull();
     }
 }

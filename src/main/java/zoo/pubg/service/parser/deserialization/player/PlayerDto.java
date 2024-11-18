@@ -10,4 +10,8 @@ public record PlayerDto(List<PlayerData> data) {
         }
         return data.get(0);
     }
+
+    public boolean isEmpty() {
+        return data.isEmpty();
+    }
 }
