@@ -9,8 +9,8 @@ import zoo.pubg.domain.list.Players;
 import zoo.pubg.repository.PlayerRepository;
 import zoo.pubg.repository.SquadRepository;
 import zoo.pubg.vo.PlayerName;
-import zoo.pubg.vo.PlayerNames;
 import zoo.pubg.vo.SquadId;
+import zoo.pubg.vo.list.PlayerNames;
 
 @Service
 @Transactional
@@ -24,7 +24,7 @@ public class SquadService {
 
     public Squad searchSquad(PlayerNames playerNames) {
         Players players = new Players();
-        for (PlayerName playerName : playerNames.playerNames()) {
+        for (PlayerName playerName : playerNames.getList()) {
             Player player = playerRepository.findByName(playerName);
             if (player == null) {
                 return null;

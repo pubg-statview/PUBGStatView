@@ -7,7 +7,7 @@ import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Squad;
 import zoo.pubg.repository.SquadPlayerRepository;
 import zoo.pubg.repository.SquadRepository;
-import zoo.pubg.vo.PlayerNames;
+import zoo.pubg.vo.list.PlayerNames;
 
 @Service
 public class SquadPlayerService {
