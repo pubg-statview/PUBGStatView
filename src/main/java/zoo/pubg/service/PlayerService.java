@@ -6,11 +6,11 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Player;
 import zoo.pubg.dto.PlayerMatchIdsDto;
+import zoo.pubg.exception.NotFoundException;
 import zoo.pubg.repository.PlayerRepository;
 import zoo.pubg.service.api.PubgBasicApi;
 import zoo.pubg.service.parser.PlayerApiParser;
@@ -21,7 +21,7 @@ import zoo.pubg.vo.PlayerName;
 import zoo.pubg.vo.PlayerNames;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRES_NEW)
+@Transactional
 @RequiredArgsConstructor
 public class PlayerService {
 
@@ -68,7 +68,10 @@ public class PlayerService {
         String joinId = names.joinToString();
         String response = pubgBasicAPI.fetchPlayerStatsByName(shards.getShardName(), joinId);
         PlayerDto playerDto = parser.parse(response);
-        return saveAndGetDtos(playerDto);
+        List<PlayerMatchIdsDto> playerMatchIdsDtos = saveAndGetDtos(playerDto);
+        validResults(names,
+                new PlayerNames(playerMatchIdsDtos.stream().map(PlayerMatchIdsDto::getPlayerName).toList()));
+        return playerMatchIdsDtos;
     }
 
     private List<PlayerMatchIdsDto> saveAndGetDtos(PlayerDto playerDto) {
@@ -81,5 +84,17 @@ public class PlayerService {
         }
 
         return dtos;
+    }
+
+    private void validResults(PlayerNames expected, PlayerNames found) {
+        PlayerNames unfound = PlayerNames.emptyList();
+        for (PlayerName e : expected.playerNames()) {
+            if (!found.contains(e)) {
+                unfound.add(e);
+            }
+        }
+        if (!unfound.isEmpty()) {
+            throw new NotFoundException(unfound.joinToString());
+        }
     }
 }
