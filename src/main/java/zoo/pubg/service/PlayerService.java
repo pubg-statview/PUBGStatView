@@ -3,7 +3,6 @@ package zoo.pubg.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,25 +11,22 @@ import zoo.pubg.domain.Player;
 import zoo.pubg.dto.PlayerMatchIdsDto;
 import zoo.pubg.exception.NotFoundException;
 import zoo.pubg.repository.PlayerRepository;
-import zoo.pubg.service.api.PubgBasicApi;
-import zoo.pubg.service.parser.PlayerApiParser;
 import zoo.pubg.service.parser.deserialization.player.PlayerData;
 import zoo.pubg.service.parser.deserialization.player.PlayerDto;
-import zoo.pubg.vo.PlayerIds;
 import zoo.pubg.vo.PlayerName;
-import zoo.pubg.vo.PlayerNames;
+import zoo.pubg.vo.list.PlayerIds;
+import zoo.pubg.vo.list.PlayerNames;
+import zoo.pubg.vo.list.ValueList;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class PlayerService {
-
-    private final static PlayerApiParser parser = new PlayerApiParser();
-
-    private final PubgBasicApi pubgBasicAPI;
 
     @Autowired
     private PlayerRepository playerRepository;
+
+    @Autowired
+    private PlayerApiService playerApiService;
 
     @Transactional(readOnly = true)
     public Player searchPlayer(PlayerName name) {
@@ -38,40 +34,35 @@ public class PlayerService {
     }
 
     public PlayerMatchIdsDto fetchPlayer(Shards shards, PlayerName name) throws JsonProcessingException {
-        String responseString = pubgBasicAPI.fetchPlayerStatsByName(shards.getShardName(), name.getName());
-        PlayerDto playerDto = parser.parse(responseString);
-        List<PlayerMatchIdsDto> playerMatchIdsDtos = saveAndGetDtos(playerDto);
-        return playerMatchIdsDtos.get(0);
+        PlayerMatchIdsDto playerMatchIdsDto = playerApiService.fetchPlayer(shards, name);
+        playerRepository.save(playerMatchIdsDto.player());
+        return playerMatchIdsDto;
     }
 
     public List<PlayerMatchIdsDto> fetchPlayersByIds(Shards shards, PlayerIds ids) throws JsonProcessingException {
-        if (ids.isEmpty()) {
-            throw new IllegalArgumentException("");
-        }
-        if (ids.size() > 10) {
-            throw new IllegalArgumentException("10개 이하여야함 (API 제한)");
-        }
-        String joinId = ids.joinToString();
-        String response = pubgBasicAPI.fetchPlayerStatsById(shards.getShardName(), joinId);
-        PlayerDto playerDto = parser.parse(response);
-        return saveAndGetDtos(playerDto);
+        validList(ids);
+        List<PlayerMatchIdsDto> playerMatchIdsDtos = playerApiService.fetchPlayersByIds(shards, ids);
+        playerMatchIdsDtos.forEach(dto -> playerRepository.save(dto.player()));
+        return playerMatchIdsDtos;
     }
 
     public List<PlayerMatchIdsDto> fetchPlayersByNames(Shards shards, PlayerNames names)
             throws JsonProcessingException {
-        if (names.isEmpty()) {
-            throw new IllegalArgumentException("");
-        }
-        if (names.size() > 10) {
-            throw new IllegalArgumentException("10개 이하여야함 (API 제한)");
-        }
-        String joinId = names.joinToString();
-        String response = pubgBasicAPI.fetchPlayerStatsByName(shards.getShardName(), joinId);
-        PlayerDto playerDto = parser.parse(response);
-        List<PlayerMatchIdsDto> playerMatchIdsDtos = saveAndGetDtos(playerDto);
+        validList(names);
+        List<PlayerMatchIdsDto> playerMatchIdsDtos = playerApiService.fetchPlayersByNames(shards, names);
+        playerMatchIdsDtos.forEach(dto -> playerRepository.save(dto.player()));
         validResults(names,
                 new PlayerNames(playerMatchIdsDtos.stream().map(PlayerMatchIdsDto::getPlayerName).toList()));
         return playerMatchIdsDtos;
+    }
+
+    private void validList(ValueList<?> list) {
+        if (list.isEmpty()) {
+            throw new IllegalArgumentException("");
+        }
+        if (list.size() > 10) {
+            throw new IllegalArgumentException("10개 이하여야함 (API 제한)");
+        }
     }
 
     private List<PlayerMatchIdsDto> saveAndGetDtos(PlayerDto playerDto) {
@@ -87,8 +78,8 @@ public class PlayerService {
     }
 
     private void validResults(PlayerNames expected, PlayerNames found) {
-        PlayerNames unfound = PlayerNames.emptyList();
-        for (PlayerName e : expected.playerNames()) {
+        PlayerNames unfound = new PlayerNames();
+        for (PlayerName e : expected.getList()) {
             if (!found.contains(e)) {
                 unfound.add(e);
             }
