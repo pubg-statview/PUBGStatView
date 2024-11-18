@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import zoo.pubg.vo.list.PlayerIds;
 
 @Embeddable
 @Getter
