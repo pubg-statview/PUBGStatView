@@ -23,4 +23,8 @@ public class Squad {
         this.squadId = squadId;
         this.lastUpdated = LocalDateTime.now();
     }
+
+    public void update() {
+        this.lastUpdated = LocalDateTime.now();
+    }
 }
