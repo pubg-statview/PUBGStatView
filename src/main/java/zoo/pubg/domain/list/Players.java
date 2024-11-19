@@ -38,6 +38,10 @@ public class Players implements Iterable<Player> {
         );
     }
 
+    public List<Player> getList() {
+        return new ArrayList<>(players);
+    }
+
     @Override
     public Iterator<Player> iterator() {
         return players.iterator();
