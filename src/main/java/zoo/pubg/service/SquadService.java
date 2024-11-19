@@ -26,6 +26,9 @@ public class SquadService {
     @Autowired
     private PlayerIntegrationService playerIntegrationService;
 
+    @Autowired
+    private SquadPlayerService squadPlayerService;
+
     @Transactional(readOnly = true)
     public Squad searchSquad(PlayerNames playerNames) {
         Players players = new Players();
@@ -42,6 +45,7 @@ public class SquadService {
 
     public void fetchSquad(Shards shards, PlayerNames playerNames) throws JsonProcessingException {
         Players players = playerIntegrationService.fetchPlayers(shards, playerNames);
-        String s = playerNames.joinToString();
+        SquadId squadId = SquadId.from(players.getPlayerIds());
+        squadPlayerService.fetchSquadPlayers(squadId, players);
     }
 }
