@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import zoo.pubg.domain.Player;
-import zoo.pubg.vo.PlayerIds;
-import zoo.pubg.vo.PlayerNames;
+import zoo.pubg.vo.list.PlayerIds;
+import zoo.pubg.vo.list.PlayerNames;
 
 public class Players implements Iterable<Player> {
 
@@ -36,6 +36,10 @@ public class Players implements Iterable<Player> {
                         .map(Player::getPlayerId)
                         .toList()
         );
+    }
+
+    public List<Player> getList() {
+        return new ArrayList<>(players);
     }
 
     @Override

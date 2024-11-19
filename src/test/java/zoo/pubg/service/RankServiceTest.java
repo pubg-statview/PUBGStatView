@@ -57,6 +57,9 @@ class RankServiceTest {
     @MockBean
     private PubgBasicApi pubgBasicApi;
 
+    @MockBean
+    private SeasonService seasonService;
+
     @Test
     @DisplayName("rank service test")
     void test() throws JsonProcessingException {
@@ -87,6 +90,44 @@ class RankServiceTest {
 
         // when
         rankService.fetch(shards, player, season);
+
+        // then
+        List<Rank> ranks = rankRepository.findAll(player);
+        assertThat(ranks.size()).isEqualTo(2);
+        assertThat(ranks.get(0).getRankedDetails().getTier().getCurrentTier()).isEqualTo("Gold");
+    }
+
+    @Test
+    @DisplayName("현재시즌 랭크정보 업데이트 테스트")
+    void currentSeasonRankTest() throws JsonProcessingException {
+        // given
+        Shards shards = Shards.KAKAO;
+        Player player = new Player(
+                new PlayerId("account.test1234"), new PlayerName("testPlayer"), shards,
+                "clan.testClasn", PlayerType.ETC, LocalDateTime.now()
+        );
+        Season season = new Season(new SeasonId("currentSeason"), true, shards);
+
+        em.persist(player);
+        em.persist(season);
+
+        String mockApiResponse = jsonFormat.formatted("""
+                "squad-fpp": {
+                    "currentTier": {"tier": "Gold","subTier": "5"},"currentRankPoint": 2086,"bestTier": {"tier": "Gold","subTier": "5"},"bestRankPoint": 2098,"roundsPlayed": 34,
+                    "avgRank": 9.382353,"avgSurvivalTime": 0,"top10Ratio": 0.6764706,"winRatio": 0,"assists": 9,"wins": 0,"kda": 0.7941176,"kdr": 0,"kills": 18,"deaths": 34,"roundMostKills": 0,"longestKill": 0,"headshotKills": 0,"headshotKillRatio": 0,"damageDealt": 5680.191,"dBNOs": 29,"reviveRatio": 0,"revives": 0,"heals": 0,"boosts": 0,"weaponsAcquired": 0,"teamKills": 0,"playTime": 0,"killStreak": 0
+                },
+                "squad": {
+                    "currentTier": {"tier": "Gold","subTier": "5"},"currentRankPoint": 2086,"bestTier": {"tier": "Gold","subTier": "5"},"bestRankPoint": 2098,"roundsPlayed": 34,
+                    "avgRank": 9.382353,"avgSurvivalTime": 0,"top10Ratio": 0.6764706,"winRatio": 0,"assists": 9,"wins": 0,"kda": 0.7941176,"kdr": 0,"kills": 18,"deaths": 34,"roundMostKills": 0,"longestKill": 0,"headshotKills": 0,"headshotKillRatio": 0,"damageDealt": 5680.191,"dBNOs": 29,"reviveRatio": 0,"revives": 0,"heals": 0,"boosts": 0,"weaponsAcquired": 0,"teamKills": 0,"playTime": 0,"killStreak": 0
+                }
+                """);
+        // when
+        when(seasonService.getCurrentSeason(shards)).thenReturn(season);
+        when(pubgBasicApi.fetchRank(shards.getShardName(), player.getPlayerId().getPlayerId(),
+                season.getSeasonId().getId())).thenReturn(mockApiResponse);
+
+        // then
+        rankService.fetchCurrentSeasonRank(shards, player);
 
         // then
         List<Rank> ranks = rankRepository.findAll(player);

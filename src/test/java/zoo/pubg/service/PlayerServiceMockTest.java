@@ -20,7 +20,7 @@ import zoo.pubg.exception.NotFoundException;
 import zoo.pubg.repository.PlayerRepository;
 import zoo.pubg.service.api.PubgBasicApi;
 import zoo.pubg.vo.PlayerName;
-import zoo.pubg.vo.PlayerNames;
+import zoo.pubg.vo.list.PlayerNames;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
