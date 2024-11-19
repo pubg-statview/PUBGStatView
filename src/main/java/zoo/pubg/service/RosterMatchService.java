@@ -7,6 +7,7 @@ import zoo.pubg.domain.Match;
 import zoo.pubg.domain.RosterMatchResult;
 import zoo.pubg.repository.RosterMatchRepository;
 import zoo.pubg.service.dto.RosterDto;
+import zoo.pubg.service.map.PlayerRosterMap;
 
 @Service
 public class RosterMatchService {

@@ -28,6 +28,9 @@ public class RankService {
     @Autowired
     private RankRepository rankRepository;
 
+    @Autowired
+    private SeasonService seasonService;
+
     public void fetch(Shards shards, Player player, Season season) throws JsonProcessingException {
         String responseString = pubgBasicApi.fetchRank(shards.getShardName(), player.getPlayerId().getPlayerId(),
                 season.getSeasonId().getId());
@@ -43,5 +46,10 @@ public class RankService {
                     .build();
             rankRepository.save(rank);
         }
+    }
+
+    public void fetchCurrentSeasonRank(Shards shards, Player player) throws JsonProcessingException {
+        Season currentSeason = seasonService.getCurrentSeason(shards);
+        fetch(shards, player, currentSeason);
     }
 }

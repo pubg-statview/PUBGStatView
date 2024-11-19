@@ -13,6 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.domain.Match;
 import zoo.pubg.service.dto.RosterDto;
+import zoo.pubg.service.map.PlayerRosterMap;
 import zoo.pubg.vo.PlayerMatchId;
 import zoo.pubg.vo.RosterId;
 
