@@ -1,7 +1,6 @@
 package zoo.pubg.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,8 +10,6 @@ import zoo.pubg.domain.Player;
 import zoo.pubg.dto.PlayerMatchIdsDto;
 import zoo.pubg.exception.NotFoundException;
 import zoo.pubg.repository.PlayerRepository;
-import zoo.pubg.service.parser.deserialization.player.PlayerData;
-import zoo.pubg.service.parser.deserialization.player.PlayerDto;
 import zoo.pubg.vo.PlayerName;
 import zoo.pubg.vo.list.PlayerIds;
 import zoo.pubg.vo.list.PlayerNames;
@@ -63,18 +60,6 @@ public class PlayerService {
         if (list.size() > 10) {
             throw new IllegalArgumentException("10개 이하여야함 (API 제한)");
         }
-    }
-
-    private List<PlayerMatchIdsDto> saveAndGetDtos(PlayerDto playerDto) {
-        List<PlayerMatchIdsDto> dtos = new ArrayList<>();
-
-        for (PlayerData data : playerDto.data()) {
-            Player player = data.toEntity();
-            playerRepository.save(player);
-            dtos.add(PlayerMatchIdsDto.from(data));
-        }
-
-        return dtos;
     }
 
     private void validResults(PlayerNames expected, PlayerNames found) {
