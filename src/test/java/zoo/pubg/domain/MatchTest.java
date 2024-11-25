@@ -2,6 +2,9 @@ package zoo.pubg.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.HashSet;
+import java.util.Set;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import zoo.pubg.factory.MatchGenerator;
 import zoo.pubg.vo.MatchId;
@@ -27,5 +30,22 @@ class MatchTest {
         Match match = MatchGenerator.generateMatch(matchId1);
 
         assertThat(match.getMatchId().hashCode()).isEqualTo(matchId1.hashCode());
+    }
+
+    @Test
+    @DisplayName("Hash 테스트")
+    void testHashTable() {
+        // given
+        Set<Match> set = new HashSet<>();
+
+        Match match1 = MatchGenerator.generateMatch(matchId1);
+        Match match2 = MatchGenerator.generateMatch(matchId2);
+
+        // when
+        set.add(match1);
+        set.add(match2);
+
+        // then
+        assertThat(set).hasSize(1);
     }
 }
