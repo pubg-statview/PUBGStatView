@@ -33,4 +33,17 @@ public class Match {
     private Integer duration;
     private String telemetryURL;
     private LocalDateTime createdAt;
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof Match other) {
+            return matchId.equals(other.matchId);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return matchId.hashCode();
+    }
 }
