@@ -1,6 +1,7 @@
 package zoo.pubg.domain;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import zoo.pubg.vo.SquadMatchStatisticalData;
 
 @Entity
 @Getter
@@ -30,8 +32,6 @@ public class SquadMatchResult {
     @JoinColumn(name = "matchId", referencedColumnName = "matchId")
     private Match match;
 
-    private Integer totalDbno;
-    private Float totalDamageDealt;
-    private Integer totalKills;
-    private Integer winPlace;
+    @Embedded
+    private SquadMatchStatisticalData data;
 }
