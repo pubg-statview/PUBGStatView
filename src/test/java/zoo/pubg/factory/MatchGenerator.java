@@ -21,6 +21,13 @@ public class MatchGenerator {
         );
     }
 
+    public static Match generateMatch(MatchId matchId) {
+        return new Match(
+                matchId, "testMap", "testGameMode", "testMatch", Shards.KAKAO,
+                1000, "testurl", LocalDateTime.now()
+        );
+    }
+
     public static List<Match> generateMatches(int count) {
         return IntStream.range(0, count)
                 .mapToObj(i -> generateMatch())
