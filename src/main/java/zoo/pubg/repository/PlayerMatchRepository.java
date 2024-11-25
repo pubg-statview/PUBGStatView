@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import zoo.pubg.domain.Match;
 import zoo.pubg.domain.Player;
 import zoo.pubg.domain.PlayerMatchResult;
+import zoo.pubg.domain.list.Players;
 
 @Repository
 public class PlayerMatchRepository {
@@ -44,6 +45,20 @@ public class PlayerMatchRepository {
         Pageable pageable = PageRequest.of(page, size);
 
         return new PageImpl<>(results, pageable, totalResults);
+    }
+
+    public List<PlayerMatchResult> findByPlayersInSameRoster(Players players) {
+        return em.createQuery("""
+                        SELECT pmr FROM PlayerMatchResult pmr
+                        WHERE pmr.rosterMatchResult IN (
+                            SELECT pmr2.rosterMatchResult FROM PlayerMatchResult pmr2
+                            WHERE pmr2.player IN :players
+                            GROUP BY pmr2.rosterMatchResult
+                            HAVING COUNT(pmr2.player) = :playerCount
+                        )""", PlayerMatchResult.class
+                ).setParameter("players", players.getList())
+                .setParameter("playerCount", players.size())
+                .getResultList();
     }
 
     private long countPlayerMatchResultByPlayer(Player player) {
