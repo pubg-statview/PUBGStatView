@@ -17,6 +17,7 @@ import zoo.pubg.exception.NotFoundException;
 import zoo.pubg.exception.TooManyRequestsException;
 import zoo.pubg.vo.PlayerName;
 import zoo.pubg.vo.list.PlayerIds;
+import zoo.pubg.vo.list.PlayerNames;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -84,5 +85,51 @@ class PlayerServiceApiTest {
         Shards shards = Shards.KAKAO;
 
         playerService.fetchPlayersByIds(shards, PlayerIds.from(ids));
+    }
+
+    @Test
+    @DisplayName("10개가 넘는 입력이 들어왔을 때 에러 (PlayerId)")
+    void tooMuchIds() {
+        // given
+        List<String> ids = List.of("account.test1",
+                "account.test2",
+                "account.test3",
+                "account.test4",
+                "account.test5",
+                "account.test6",
+                "account.test7",
+                "account.test8",
+                "account.test9",
+                "account.test10",
+                "account.test11"
+        );
+        // when & then
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> playerService.fetchPlayersByIds(Shards.KAKAO, PlayerIds.from(ids))
+        );
+    }
+
+    @Test
+    @DisplayName("10개가 넘는 입력이 들어왔을 때 에러 (PlayerName)")
+    void tooMuchNames() {
+        // given
+        List<String> ids = List.of("testPlayer1",
+                "testPlayer2",
+                "testPlayer3",
+                "testPlayer4",
+                "testPlayer5",
+                "testPlayer6",
+                "testPlayer7",
+                "testPlayer8",
+                "testPlayer9",
+                "testPlayer10",
+                "testPlayer11"
+        );
+        // when & then
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> playerService.fetchPlayersByNames(Shards.KAKAO, PlayerNames.from(ids))
+        );
     }
 }

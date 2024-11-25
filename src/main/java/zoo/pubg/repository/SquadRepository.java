@@ -19,4 +19,9 @@ public class SquadRepository {
     public void save(Squad squad) {
         em.persist(squad);
     }
+
+    public void update(Squad squad) {
+        Squad found = find(squad.getSquadId());
+        found.update();
+    }
 }

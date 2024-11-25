@@ -29,7 +29,7 @@ public class PlayerIntegrationService {
         return playerMatchIdsDto.player();
     }
 
-    public Players fetchPlgayers(Shards shards, PlayerNames playerNames) throws JsonProcessingException {
+    public Players fetchPlayers(Shards shards, PlayerNames playerNames) throws JsonProcessingException {
         List<PlayerMatchIdsDto> playerMatchIdsDtos = playerService.fetchPlayersByNames(shards, playerNames);
         for (PlayerMatchIdsDto playerMatchIdsDto : playerMatchIdsDtos) {
             fetchPlayerInformation(shards, playerMatchIdsDto);
