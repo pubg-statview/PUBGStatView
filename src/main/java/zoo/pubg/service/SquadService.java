@@ -46,6 +46,18 @@ public class SquadService {
     public void fetchSquad(Shards shards, PlayerNames playerNames) throws JsonProcessingException {
         Players players = playerIntegrationService.fetchPlayers(shards, playerNames);
         SquadId squadId = SquadId.from(players.getPlayerIds());
-        squadPlayerService.fetchSquadPlayers(squadId, players);
+        Squad squad = getOrCreate(squadId);
+        squadPlayerService.fetchSquadPlayers(squad, players);
+    }
+
+    private Squad getOrCreate(SquadId squadId) {
+        Squad squad = squadRepository.find(squadId);
+        if (squad == null) {
+            Squad created = new Squad(squadId);
+            squadRepository.save(created);
+            return created;
+        }
+        squadRepository.update(squad);
+        return squad;
     }
 }
