@@ -3,9 +3,12 @@ package zoo.pubg.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,6 +24,7 @@ import zoo.pubg.domain.Match;
 import zoo.pubg.domain.Player;
 import zoo.pubg.domain.PlayerMatchResult;
 import zoo.pubg.domain.RosterMatchResult;
+import zoo.pubg.domain.list.Players;
 import zoo.pubg.vo.MatchId;
 import zoo.pubg.vo.PlayerId;
 import zoo.pubg.vo.PlayerMatchId;
@@ -36,6 +40,9 @@ class PlayerMatchRepositoryTest {
     private PlayerMatchRepository playerMatchRepository;
 
     @Autowired
+    private PlayerRepository playerRepository;
+
+    @PersistenceContext
     private EntityManager em;
 
     private Player testPlayer;
@@ -110,5 +117,31 @@ class PlayerMatchRepositoryTest {
 
         // then
         assertThat(allParticipants.size()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("모든 플레이어들이 같은 매치, 팀에 속해있는 결과들 테스트")
+    void findByPlayersInSameRosterTest() {
+        // given
+        List<Player> byName = List.of(
+                playerRepository.findByName(new PlayerName("Lil_Ziu__Vert")),
+                playerRepository.findByName(new PlayerName("dydtjd0908")),
+                playerRepository.findByName(new PlayerName("Dont1ike")),
+                playerRepository.findByName(new PlayerName("kakaochin9"))
+        );
+        Players players = new Players(byName);
+
+        // when
+        List<PlayerMatchResult> byPlayersInSameRoster = playerMatchRepository.findByPlayersInSameRoster(players);
+
+        // then
+        Map<MatchId, Integer> map = new HashMap<>();
+        for (PlayerMatchResult playerMatchResult : byPlayersInSameRoster) {
+            MatchId matchId = playerMatchResult.getMatch().getMatchId();
+            map.put(matchId, map.getOrDefault(matchId, 0) + 1);
+        }
+        for (Integer value : map.values()) {
+            assertThat(value).isEqualTo(4);
+        }
     }
 }

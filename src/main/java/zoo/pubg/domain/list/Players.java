@@ -42,6 +42,10 @@ public class Players implements Iterable<Player> {
         return new ArrayList<>(players);
     }
 
+    public int size() {
+        return players.size();
+    }
+
     @Override
     public Iterator<Player> iterator() {
         return players.iterator();

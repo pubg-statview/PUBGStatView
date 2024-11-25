@@ -7,12 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode
+@ToString
 public class MatchId implements Serializable {
 
     @Serial

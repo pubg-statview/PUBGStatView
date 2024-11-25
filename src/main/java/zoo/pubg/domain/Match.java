@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.vo.MatchId;
 
@@ -17,6 +18,7 @@ import zoo.pubg.vo.MatchId;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "`Match`")
+@ToString
 public class Match {
 
     @EmbeddedId
@@ -31,4 +33,17 @@ public class Match {
     private Integer duration;
     private String telemetryURL;
     private LocalDateTime createdAt;
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof Match other) {
+            return matchId.equals(other.matchId);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return matchId.hashCode();
+    }
 }

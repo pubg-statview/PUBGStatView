@@ -9,6 +9,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import zoo.pubg.vo.PlayerId;
 import zoo.pubg.vo.PlayerMatchId;
 import zoo.pubg.vo.RosterId;
@@ -17,6 +18,7 @@ import zoo.pubg.vo.RosterId;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class PlayerMatchResult {
 
     @EmbeddedId

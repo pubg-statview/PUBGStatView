@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import zoo.pubg.constant.PlayerType;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.vo.PlayerId;
@@ -18,6 +19,7 @@ import zoo.pubg.vo.PlayerName;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Player {
 
     @EmbeddedId
