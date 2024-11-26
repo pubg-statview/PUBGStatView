@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import zoo.pubg.constant.LastUpdated;
 import zoo.pubg.vo.SquadId;
 
 @Entity
@@ -21,7 +22,7 @@ public class Squad {
 
     public Squad(SquadId squadId) {
         this.squadId = squadId;
-        this.lastUpdated = LocalDateTime.now();
+        this.lastUpdated = LastUpdated.INITIALIZATION.getTime();
     }
 
     public void update() {
