@@ -12,7 +12,7 @@ public class SquadMatchResultGenerator {
                 10, 1000f, 14, 1
         );
         return new SquadMatchResult(
-                null, squad, match, data
+                squad, match, data
         );
     }
 }
