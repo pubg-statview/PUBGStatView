@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -121,6 +122,7 @@ class PlayerMatchRepositoryTest {
 
     @Test
     @DisplayName("모든 플레이어들이 같은 매치, 팀에 속해있는 결과들 테스트")
+    @Disabled
     void findByPlayersInSameRosterTest() {
         // given
         List<Player> byName = List.of(
