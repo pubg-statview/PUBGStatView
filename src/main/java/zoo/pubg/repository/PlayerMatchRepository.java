@@ -2,6 +2,7 @@ package zoo.pubg.repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -47,7 +48,7 @@ public class PlayerMatchRepository {
         return new PageImpl<>(results, pageable, totalResults);
     }
 
-    public List<PlayerMatchResult> findByPlayersInSameRoster(Players players) {
+    public List<PlayerMatchResult> findByPlayersInSameRoster(Players players, LocalDateTime lastUpdated) {
         return em.createQuery("""
                         SELECT pmr FROM PlayerMatchResult pmr
                         WHERE pmr.rosterMatchResult IN (
@@ -55,9 +56,11 @@ public class PlayerMatchRepository {
                             WHERE pmr2.player IN :players
                             GROUP BY pmr2.rosterMatchResult
                             HAVING COUNT(pmr2.player) = :playerCount
-                        )""", PlayerMatchResult.class
+                        ) AND pmr.match.createdAt > :lastUpdated
+                        """, PlayerMatchResult.class
                 ).setParameter("players", players.getList())
                 .setParameter("playerCount", players.size())
+                .setParameter("lastUpdated", lastUpdated)
                 .getResultList();
     }
 

@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
+import zoo.pubg.constant.LastUpdated;
 import zoo.pubg.constant.PlayerType;
 import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Match;
@@ -134,11 +135,13 @@ class PlayerMatchRepositoryTest {
         Players players = new Players(byName);
 
         // when
-        List<PlayerMatchResult> byPlayersInSameRoster = playerMatchRepository.findByPlayersInSameRoster(players);
+        List<PlayerMatchResult> results = playerMatchRepository.findByPlayersInSameRoster(
+                players, LastUpdated.INITIALIZATION.getTime());
 
         // then
+        assertThat(results).isNotEmpty();
         Map<MatchId, Integer> map = new HashMap<>();
-        for (PlayerMatchResult playerMatchResult : byPlayersInSameRoster) {
+        for (PlayerMatchResult playerMatchResult : results) {
             MatchId matchId = playerMatchResult.getMatch().getMatchId();
             map.put(matchId, map.getOrDefault(matchId, 0) + 1);
         }

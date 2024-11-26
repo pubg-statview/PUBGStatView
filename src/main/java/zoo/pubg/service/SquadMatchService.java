@@ -14,6 +14,7 @@ import zoo.pubg.domain.SquadMatchResult;
 import zoo.pubg.domain.list.Players;
 import zoo.pubg.repository.PlayerMatchRepository;
 import zoo.pubg.repository.SquadMatchRepository;
+import zoo.pubg.repository.SquadRepository;
 import zoo.pubg.vo.SquadMatchStatisticalData;
 
 @Service
@@ -26,9 +27,13 @@ public class SquadMatchService {
     @Autowired
     private SquadMatchRepository squadMatchRepository;
 
+    @Autowired
+    private SquadRepository squadRepository;
+
     public void fetchSquadMatchResult(Squad squad, Players players) {
         Map<Match, List<PlayerMatchResult>> map = new HashMap<>();
-        List<PlayerMatchResult> results = playerMatchRepository.findByPlayersInSameRoster(players);
+        List<PlayerMatchResult> results = playerMatchRepository.findByPlayersInSameRoster(
+                players, squad.getLastUpdated());
         for (PlayerMatchResult playerMatchResult : results) {
             Match match = playerMatchResult.getMatch();
             if (!map.containsKey(match)) {
@@ -42,5 +47,6 @@ public class SquadMatchService {
             SquadMatchResult result = new SquadMatchResult(squad, match, data);
             squadMatchRepository.save(result);
         }
+        squadRepository.update(squad);
     }
 }

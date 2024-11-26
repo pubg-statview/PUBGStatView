@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -80,5 +82,8 @@ class SquadMatchServiceTest {
         assertThat(foundBySquad).hasSize(2);
         assertThat(foundByMatch1).hasSize(1);
         assertThat(foundByMatch1.get(0).getData().winPlace()).isEqualTo(1);
+
+        long diffSeconds = ChronoUnit.SECONDS.between(squad.getLastUpdated(), LocalDateTime.now());
+        assertThat(diffSeconds).isLessThan(300);
     }
 }
