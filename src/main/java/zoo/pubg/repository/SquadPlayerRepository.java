@@ -27,6 +27,6 @@ public class SquadPlayerRepository {
     }
 
     public void save(SquadPlayer squadPlayer) {
-        em.persist(squadPlayer);
+        em.merge(squadPlayer);
     }
 }
