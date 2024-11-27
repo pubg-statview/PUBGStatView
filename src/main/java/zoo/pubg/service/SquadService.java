@@ -8,6 +8,7 @@ import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Player;
 import zoo.pubg.domain.Squad;
 import zoo.pubg.domain.list.Players;
+import zoo.pubg.dto.SquadPlayersDto;
 import zoo.pubg.repository.PlayerRepository;
 import zoo.pubg.repository.SquadRepository;
 import zoo.pubg.vo.PlayerName;
@@ -15,6 +16,7 @@ import zoo.pubg.vo.SquadId;
 import zoo.pubg.vo.list.PlayerNames;
 
 @Service
+@Transactional
 public class SquadService {
 
     @Autowired
@@ -43,11 +45,12 @@ public class SquadService {
         return squadRepository.find(SquadId.from(players.getPlayerIds()));
     }
 
-    public void fetchSquad(Shards shards, PlayerNames playerNames) throws JsonProcessingException {
+    public SquadPlayersDto fetchSquad(Shards shards, PlayerNames playerNames) throws JsonProcessingException {
         Players players = playerIntegrationService.fetchPlayers(shards, playerNames);
         SquadId squadId = SquadId.from(players.getPlayerIds());
         Squad squad = getOrCreate(squadId);
         squadPlayerService.fetchSquadPlayers(squad, players);
+        return new SquadPlayersDto(squad, players);
     }
 
     private Squad getOrCreate(SquadId squadId) {
