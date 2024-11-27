@@ -98,7 +98,7 @@ class SquadMatchServiceTest {
         // then
         assertThat(foundBySquad).hasSize(2);
         assertThat(foundByMatch1).hasSize(1);
-        assertThat(foundByMatch1.get(0).getData().winPlace()).isEqualTo(1);
+        assertThat(foundByMatch1.get(0).getData().winPlace()).isEqualTo(rosterMatchResult1.getRank());
 
         long diffSeconds = ChronoUnit.SECONDS.between(squad.getLastUpdated(), LocalDateTime.now());
         assertThat(diffSeconds).isLessThan(300);
@@ -121,7 +121,6 @@ class SquadMatchServiceTest {
         for (PlayerMatchResult playerMatch : oldPlayerMatch) {
             em.persist(playerMatch);
         }
-        squad.update(); // 현재시간으로 업데이트
 
         // when
         squadMatchService.fetchSquadMatchResult(squad, players);
