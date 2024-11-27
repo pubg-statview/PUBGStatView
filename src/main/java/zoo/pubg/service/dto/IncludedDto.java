@@ -9,7 +9,7 @@ public record IncludedDto(
 ) {
 
     public String getTelemetryUrl() {
-        if (assetDtos.size() == 0) {
+        if (assetDtos.isEmpty()) {
             return "";
         }
         return assetDtos.get(0).url();
