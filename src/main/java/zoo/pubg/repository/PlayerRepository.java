@@ -50,7 +50,6 @@ public class PlayerRepository {
         if (foundByName != null && !player.hasSameId(foundByName)) {
             PlayerName newName = new PlayerName(foundByName.getPlayerId().getPlayerId());
             foundByName.updateName(newName);
-            em.flush();
         }
 
         if (foundById == null) {
