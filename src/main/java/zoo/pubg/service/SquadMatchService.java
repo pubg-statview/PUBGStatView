@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.domain.Match;
@@ -29,6 +30,11 @@ public class SquadMatchService {
 
     @Autowired
     private SquadRepository squadRepository;
+
+    @Transactional(readOnly = true)
+    public Page<SquadMatchResult> findAllWithPagination(Squad squad, int page, int size) {
+        return squadMatchRepository.findAllWithPagination(squad, page, size);
+    }
 
     public void fetchSquadMatchResult(Squad squad, Players players) {
         Map<Match, List<PlayerMatchResult>> map = new HashMap<>();

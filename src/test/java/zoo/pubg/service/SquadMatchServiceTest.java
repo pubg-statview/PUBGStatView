@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import zoo.pubg.constant.Shards;
@@ -130,5 +132,24 @@ class SquadMatchServiceTest {
         // then
         assertThat(recentSquadMatch).hasSize(1);
         assertThat(oldSquadMatch).isEmpty();
+    }
+
+    @Test
+    @DisplayName("squad 기록 pagination 테스트")
+    void squadPaginationTest() {
+        // given
+        int page = 0;
+        int size = 5;
+        squadMatchService.fetchSquadMatchResult(squad, players);
+
+        // when
+        Page<SquadMatchResult> resultPage = squadMatchService.findAllWithPagination(squad, page, size);
+
+        // then
+        assertThat(resultPage).isNotNull();
+        assertThat(resultPage.getContent().size()).isEqualTo(2);
+        assertThat(resultPage.getContent())
+                .extracting(result -> result.getMatch().getCreatedAt())
+                .isSortedAccordingTo(Comparator.reverseOrder());
     }
 }
