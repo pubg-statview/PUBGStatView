@@ -15,7 +15,7 @@ import zoo.pubg.service.PlayerService;
 import zoo.pubg.vo.PlayerName;
 
 @RestController
-@RequestMapping("/api/search-match")
+@RequestMapping("/api/match")
 public class MatchSearchController {
 
     @Autowired
