@@ -7,6 +7,7 @@ import jakarta.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
+import zoo.pubg.constant.Shards;
 import zoo.pubg.domain.Match;
 import zoo.pubg.domain.Player;
 import zoo.pubg.domain.PlayerMatchResult;
@@ -27,6 +29,7 @@ import zoo.pubg.factory.PlayerMatchResultGenerator;
 import zoo.pubg.factory.RosterMatchResultGenerator;
 import zoo.pubg.factory.SquadGenerator;
 import zoo.pubg.repository.SquadMatchRepository;
+import zoo.pubg.vo.MatchId;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -42,20 +45,25 @@ class SquadMatchServiceTest {
     @Autowired
     private SquadMatchRepository squadMatchRepository;
 
-    @Test
-    @DisplayName("스쿼드 매치 결과 패치 테스트")
-    void fetchSquadMatchTest() {
-        // given
-        Players players = PlayerGenerator.generatePlayers(4);
-        Squad squad = SquadGenerator.generate(players);
-        Match match1 = MatchGenerator.generateMatch();
-        Match match2 = MatchGenerator.generateMatch();
-        RosterMatchResult rosterMatchResult1 = RosterMatchResultGenerator.generate(match1);
-        RosterMatchResult rosterMatchResult2 = RosterMatchResultGenerator.generate(match2);
-        List<PlayerMatchResult> playerMatchResults1 = PlayerMatchResultGenerator.generateResults(players, match1,
-                rosterMatchResult1);
-        List<PlayerMatchResult> playerMatchResults2 = PlayerMatchResultGenerator.generateResults(players, match2,
-                rosterMatchResult2);
+    private Players players;
+    private Squad squad;
+    private Match match1;
+    private Match match2;
+    private RosterMatchResult rosterMatchResult1;
+    private RosterMatchResult rosterMatchResult2;
+    private List<PlayerMatchResult> playerMatchResults1;
+    private List<PlayerMatchResult> playerMatchResults2;
+
+    @BeforeEach
+    void setUp() {
+        players = PlayerGenerator.generatePlayers(4);
+        squad = SquadGenerator.generate(players);
+        match1 = MatchGenerator.generateMatch();
+        match2 = MatchGenerator.generateMatch();
+        rosterMatchResult1 = RosterMatchResultGenerator.generate(match1);
+        rosterMatchResult2 = RosterMatchResultGenerator.generate(match2);
+        playerMatchResults1 = PlayerMatchResultGenerator.generateResults(players, match1, rosterMatchResult1);
+        playerMatchResults2 = PlayerMatchResultGenerator.generateResults(players, match2, rosterMatchResult2);
 
         for (Player player : players) {
             em.persist(player);
@@ -71,6 +79,13 @@ class SquadMatchServiceTest {
             em.persist(playerMatchResults1.get(i));
             em.persist(playerMatchResults2.get(i));
         }
+    }
+
+    @Test
+    @DisplayName("스쿼드 매치 결과 패치 테스트")
+    void fetchSquadMatchTest() {
+        // given
+        // setup
 
         // when
         squadMatchService.fetchSquadMatchResult(squad, players);
@@ -85,5 +100,35 @@ class SquadMatchServiceTest {
 
         long diffSeconds = ChronoUnit.SECONDS.between(squad.getLastUpdated(), LocalDateTime.now());
         assertThat(diffSeconds).isLessThan(300);
+    }
+
+    @Test
+    @DisplayName("lastUpdated 이후 데이터들은 불러와지지 않아야 한다.")
+    void beforeLastUpdateTest() {
+        // given
+        Match oldMatch = new Match(
+                new MatchId("testMatch-test01"), "testMap", "testMode",
+                "testType", Shards.KAKAO, 1000, "testUrl",
+                LocalDateTime.of(2000, 1, 1, 0, 0, 0, 0)
+        );
+        RosterMatchResult oldRoster = RosterMatchResultGenerator.generate(oldMatch);
+        List<PlayerMatchResult> oldPlayerMatch = PlayerMatchResultGenerator.generateResults(
+                players, oldMatch, oldRoster);
+        em.persist(oldMatch);
+        em.persist(oldRoster);
+        for (PlayerMatchResult playerMatch : oldPlayerMatch) {
+            em.persist(playerMatch);
+        }
+        squad.update(); // 현재시간으로 업데이트
+
+        // when
+        squadMatchService.fetchSquadMatchResult(squad, players);
+
+        List<SquadMatchResult> recentSquadMatch = squadMatchRepository.findBy(match1);
+        List<SquadMatchResult> oldSquadMatch = squadMatchRepository.findBy(oldMatch);
+
+        // then
+        assertThat(recentSquadMatch).hasSize(1);
+        assertThat(oldSquadMatch).isEmpty();
     }
 }
