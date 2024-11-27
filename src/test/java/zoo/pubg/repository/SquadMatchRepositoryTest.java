@@ -71,6 +71,5 @@ class SquadMatchRepositoryTest {
                 DataIntegrityViolationException.class,
                 () -> squadMatchRepository.save(sameEntity)
         ).printStackTrace();
-
     }
 }
