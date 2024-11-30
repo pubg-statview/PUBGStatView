@@ -10,10 +10,18 @@ spring:
       ddl-auto: ${PUBG_JPA_DDL_AUTO}
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-
   logging:
     level:
       root: ${PUBG_LOG_LEVEL}
+      org.thymeleaf: DEBUG
+  web:
+    resources:
+      static-locations: classpath:/static/
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    cache: false
 
 pubg:
   api:
