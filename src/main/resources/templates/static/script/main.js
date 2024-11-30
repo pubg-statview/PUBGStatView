@@ -31,7 +31,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // stats-view.html로 이동하며 입력값 전달
-        const url = `stats-view.html?playerName=${encodeURIComponent(inputValue)}`;
+        const url = `player-stats-view.html?playerName=${encodeURIComponent(inputValue)}`;
         window.location.href = url;
     });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    // 쿼리 파라미터에서 playerName 추출
+    const urlParams = new URLSearchParams(window.location.search);
+    const playerName = urlParams.get("playerName");
+
+    // 플레이어 이름을 DOM에 출력
+    const playerNameElement = document.getElementById("player-name");
+    if (playerName) {
+        playerNameElement.textContent = `Player Name: ${decodeURIComponent(playerName)}`;
+    } else {
+        playerNameElement.textContent = "Player name is not available.";
+    }
 });
